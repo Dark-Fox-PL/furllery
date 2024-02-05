@@ -12,9 +12,15 @@ Version: 1.0.0
 Author URI: https://darkfox.pl
 */
 
+// Ensure some of WP Core is loaded.
+if ( ! class_exists( 'Link_List_Table' ) ) {
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+}
+
+// Define plugin's constants.
 define( 'DF__FURLLERY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'DF__FURLLERY_LIB_DIR',  plugin_dir_path( __FILE__ ) . 'lib' . DIRECTORY_SEPARATOR );
-define( 'DF__FURLLERY_VIEW_DIR',  plugin_dir_path( __FILE__ ) . 'view' . DIRECTORY_SEPARATOR );
+define( 'DF__FURLLERY_LIB_DIR', plugin_dir_path( __FILE__ ) . 'lib' . DIRECTORY_SEPARATOR );
+define( 'DF__FURLLERY_VIEW_DIR', plugin_dir_path( __FILE__ ) . 'view' . DIRECTORY_SEPARATOR );
 
 // Load dependencies.
 require_once( DF__FURLLERY_LIB_DIR . 'setup.php' );
