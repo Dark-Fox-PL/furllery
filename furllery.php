@@ -21,6 +21,7 @@ if ( ! class_exists( 'Link_List_Table' ) ) {
 define( 'DF__FURLLERY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DF__FURLLERY_LIB_DIR', plugin_dir_path( __FILE__ ) . 'lib' . DIRECTORY_SEPARATOR );
 define( 'DF__FURLLERY_VIEW_DIR', plugin_dir_path( __FILE__ ) . 'view' . DIRECTORY_SEPARATOR );
+define( 'DF__FURLLERY_ASSETS_DIR', plugin_dir_path( __FILE__ ) . 'assets' . DIRECTORY_SEPARATOR );
 
 // Load dependencies.
 require_once( DF__FURLLERY_LIB_DIR . 'setup.php' );

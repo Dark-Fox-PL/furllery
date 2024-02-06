@@ -1,0 +1,5 @@
+form#add-gallery {
+  input[type=text] {
+    width: 25em;
+  }
+}
