@@ -69,18 +69,18 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 
 }
 
-?>
-
-<div class="wrap"><h2>Furllery - Galerie</h2></div>
-
-<?php
-
 $table = new Furllery_Galleries_List_Table;
 $table->prepare_items();
 
 ?>
 
-<form id="df-furllery-galleries-table" method="GET">
-  <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
-	<?php $table->display() ?>
-</form>
+<div class="wrap">
+  <h1 class="wp-heading-inline"><?php echo esc_html__('Furllery - Galerie'); ?></h1>
+  <a href="<?php echo esc_url( admin_url( 'admin.php?page=furllery__add_gallery' ) ); ?>" role="button" class="page-title-action"><?php echo esc_html__( 'Dodaj nową galerię' ); ?></a>
+  <hr class="wp-header-end">
+
+  <form id="df-furllery-galleries-table" method="GET">
+    <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
+	  <?php $table->display() ?>
+  </form>
+</div>
