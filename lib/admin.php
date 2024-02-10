@@ -20,6 +20,16 @@ final class FurlleryAdmin {
 		add_submenu_page( 'furllery__galleries', 'Furllery - Dodaj galerię', 'Dodaj Galerię', 'manage_options', 'furllery__add_gallery', [ $this, 'plugin_add_gallery_page' ] );
 	}
 
+	public function extend_top_bar_menu( $wp_admin_bar ): void {
+		$args = array(
+			'id'    => 'furllery-add',
+			'parent' => 'new-content',
+			'title' => 'Galerię Furllery',
+			'href'  => admin_url() . 'admin.php?page=furllery__add_gallery',
+		);
+		$wp_admin_bar->add_node( $args );
+	}
+
 	public function plugin_main_page(): void {
 		require_once DF__FURLLERY_VIEW_DIR . 'admin__main.php';
 	}
@@ -40,6 +50,7 @@ final class FurlleryAdmin {
 		add_action( 'admin_menu', [ $this, 'create_admin_menu' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_admin_css' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_admin_js' ] );
+		add_action( 'admin_bar_menu', [ $this, 'extend_top_bar_menu' ] );
 
 		return $this->add_admin_ajax_actions();
 	}
