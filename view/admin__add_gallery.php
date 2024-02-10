@@ -3,7 +3,9 @@
   <hr class="wp-header-end">
 
   <form method="post" name="add-gallery" id="add-gallery" class="validate gallery-form" novalidate="novalidate">
-    <div class="image-wrapper" data-image-id=""></div>
+    <div class="image-wrapper hidden" data-image-id="">
+      <div class="dashicons-before dashicons-trash delete-image"></div>
+    </div>
 	  <?php wp_nonce_field( 'add-gallery', '_wpnonce_add-gallery' ); ?>
 
     <input name="action" type="hidden" value="add_gallery">

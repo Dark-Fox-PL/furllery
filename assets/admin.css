@@ -16,29 +16,27 @@ form.gallery-form {
 
     .image-wrapper {
       margin-right: 10px;
+      position: relative;
 
-      &:before {
-        content: '';
-        display: block;
-        border-radius: 5px;
-        outline: 1px solid slategray;
-        width: 150px;
-        height: 150px;
-        background-color: transparent;
+      .delete-image {
         position: absolute;
+        top: 0;
+        right: 0;
+        opacity: 0;
+        padding: 5px;
+        background-color: rgba(243, 244, 245, 0.45);
+        border-radius: 5px;
         transition: all .2s;
+
+        &:hover {
+          color: orangered;
+          cursor: pointer;
+        }
       }
 
       &:hover {
-        &:before {
-          content: 'Usunąć?';
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 20px;
-          font-weight: bold;
-          cursor: pointer;
-          background-color: rgba(243, 244, 245, 0.45);
+        .delete-image {
+          opacity: 1;
         }
       }
 
