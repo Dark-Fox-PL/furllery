@@ -46,7 +46,7 @@
           <th scope="row"><label for="gallery_content"><?php echo esc_html__( 'Zdjęcia', 'df_furllery' ) ?></label></th>
           <td>
             <input name="content" type="hidden" id="gallery_content" value="[]" aria-required="true" autocapitalize="none" autocorrect="off" autocomplete="off">
-            <button id="furllery-select-images" type="button"><?php echo esc_html__( 'Wybierz zdjęcia', 'df_furllery' ); ?></button>
+            <button id="furllery-select-images" class="page-title-action" type="button"><?php echo esc_html__( 'Wybierz zdjęcia', 'df_furllery' ); ?></button>
             <div class="images-wrapper"></div>
           </td>
         </tr>
