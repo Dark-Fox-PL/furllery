@@ -6,7 +6,12 @@ final class FurlleryAdmin {
 	}
 
 	public function add_admin_css(): void {
-		wp_enqueue_style( 'my-plugin-admin-style', plugins_url( 'assets/admin.css', dirname( __FILE__ ) ) );
+		wp_enqueue_style( 'furllery-admin-style', plugins_url( 'assets/admin.css', dirname( __FILE__ ) ) );
+	}
+	public function add_admin_js(): void {
+		wp_enqueue_script( 'furllery-admin-script', plugins_url( 'assets/admin.js', dirname( __FILE__ ) ) );
+		wp_enqueue_script( 'furllery-admin-script', get_template_directory_uri() . '/js/admin.js', array( 'jquery', 'wp-mediaelement' ), '1.0.0', true );
+		wp_enqueue_media();
 	}
 
 	public function create_admin_menu(): void {
@@ -35,6 +40,19 @@ final class FurlleryAdmin {
 	protected function add_actions(): FurlleryAdmin {
 		add_action( 'admin_menu', [ $this, 'create_admin_menu' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_admin_css' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'add_admin_js' ] );
+
+		return $this->add_admin_ajax_actions();
+	}
+
+	protected function add_admin_ajax_actions(): FurlleryAdmin {
+		$open_ml = function () {
+			if ( ! current_user_can( 'edit_posts' ) ) {
+				wp_die();
+			}
+		};
+
+		add_action( 'wp_ajax_furllery_open_media_library', $open_ml );
 
 		return $this;
 	}
