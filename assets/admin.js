@@ -22,7 +22,6 @@ class FurlleryAdmin {
         title: 'Wybierz obraz',
         button: { text: 'Wybierz' },
         multiple: true,
-        library: { type: 'image' }
       });
 
       media_frame.on( 'select', () => this.handleSelectedImages( media_frame ) );
@@ -73,10 +72,14 @@ class FurlleryAdmin {
         continue;
       }
 
-      const url = image?.sizes?.thumbnail?.url ?? '';
+      let url = image?.sizes?.thumbnail?.url ?? '';
 
       if ('' === url) {
-        continue;
+        url = image?.sizes?.full?.url ?? ''
+
+        if ('' === url) {
+          continue;
+        }
       }
 
       gallery.push(image.id);

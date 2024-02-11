@@ -15,8 +15,18 @@ form.gallery-form {
     flex-direction: row;
 
     .image-wrapper {
+      max-width: 150px;
+      max-height: 150px;
       margin-right: 10px;
       position: relative;
+      overflow: hidden;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
       .delete-image {
         position: absolute;
