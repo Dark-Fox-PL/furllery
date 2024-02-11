@@ -16,8 +16,8 @@ final class FurlleryAdmin {
 
 	public function create_admin_menu(): void {
 		add_menu_page('Furllery', 'Furllery', 'manage_options', 'furllery', [ $this, 'plugin_main_page' ], 'dashicons-format-gallery');
+		add_submenu_page( 'furllery', 'Furllery - Dodaj galerię', 'Dodaj Galerię', 'manage_options', 'furllery__add_gallery', [ $this, 'plugin_add_gallery_page' ] );
 		add_submenu_page( 'furllery', 'Furllery - Ustawienia', 'Ustawienia', 'manage_options', 'furllery__settings', [ $this, 'plugin_settings_page' ] );
-		add_submenu_page( 'furllery__galleries', 'Furllery - Dodaj galerię', 'Dodaj Galerię', 'manage_options', 'furllery__add_gallery', [ $this, 'plugin_add_gallery_page' ] );
 	}
 
 	public function extend_top_bar_menu( $wp_admin_bar ): void {
