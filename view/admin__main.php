@@ -52,7 +52,7 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM $table_name" );
 
 		$paged    = isset( $_REQUEST['paged'] ) ? max( 0, intval( $_REQUEST['paged'] - 1 ) * $per_page ) : 0;
-		$order_by = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? $_REQUEST['orderby'] : 'name';
+		$order_by = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? $_REQUEST['orderby'] : 'title';
 		$order    = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], [
 				'asc',
 				'desc',
