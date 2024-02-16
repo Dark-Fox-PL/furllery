@@ -12,6 +12,10 @@ Version: 1.0.0
 Author URI: https://darkfox.pl
 */
 
+global $furllery_errors, $furllery_success_msg;
+$furllery_errors = [];
+$furllery_success_msg = '';
+
 // Ensure some of WP Core is loaded.
 if ( ! class_exists( 'Link_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );

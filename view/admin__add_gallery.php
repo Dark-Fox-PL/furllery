@@ -2,6 +2,12 @@
   <h1 class="wp-heading-inline"><?php echo esc_html__( 'Furllery - Nowa galeria' ); ?></h1>
   <hr class="wp-header-end">
 
+  <?php if (isset($furllery_success_msg) && '' !== $furllery_success_msg): ?>
+    <div class="notice notice-success is-dismissible">
+      <p><?php echo $furllery_success_msg; ?></p>
+    </div>
+  <?php endif; ?>
+
   <form method="post" name="add-gallery" id="add-gallery" class="validate gallery-form" novalidate="novalidate">
     <div class="image-wrapper hidden" data-image-id="">
       <div class="dashicons-before dashicons-trash delete-image"></div>
@@ -14,7 +20,7 @@
       <tbody>
         <tr class="form-field form-required">
           <th scope="row"><label for="gallery_title"><?php echo esc_html__( 'Nazwa', 'df_furllery' ) ?></label></th>
-          <td><input name="title" type="text" id="gallery_title" value="" aria-required="true" autocapitalize="none" autocorrect="off" autocomplete="off" maxlength="255" class="regular-text"></td>
+          <td><input name="title" type="text" id="gallery_title" value="" aria-required="true" autocapitalize="none" autocorrect="off" autocomplete="off" maxlength="255" class="regular-text <?php echo isset($furllery_errors['title']) ? 'has-error' : ''; ?>"></td>
         </tr>
 
         <tr class="form-field">
@@ -23,7 +29,7 @@
 	          <?php
 
 	          $editor_args = [
-		          'textarea_name' => 'content',
+		          'textarea_name' => 'description',
 		          'textarea_rows' => 5,
 		          'media_buttons' => false,
 		          'tinymce'       => false,
@@ -57,5 +63,16 @@
 
     <p class="submit"><input type="submit" name="add_gallery" id="add-gallery-sub" class="button button-primary" value="<?php echo esc_html__( 'Utwórz galerię', 'df_furllery' ) ?>"></p>
   </form>
+
+  <?php if ( 0 < count( $furllery_errors ) ): ?>
+    <div class="error-holder">
+      <strong>Coś poszło nie tak:</strong>
+      <ul>
+        <?php foreach ( $furllery_errors as $key => $error ): ?>
+            <li><?php echo $error; ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
 </div>
 

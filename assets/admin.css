@@ -3,6 +3,10 @@ form.gallery-form {
 
   input[type=text] {
     width: 100%;
+
+    &.has-error {
+      border-color: orangered;
+    }
   }
 
   #gallery_description {
@@ -54,5 +58,18 @@ form.gallery-form {
         border-radius: 5px;
       }
     }
+  }
+}
+
+.error-holder {
+  color: orangered;
+
+  strong {
+    font-size: 1.25em;
+  }
+
+  ul {
+    padding-left: 20px;
+    list-style: disc;
   }
 }
