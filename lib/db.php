@@ -4,10 +4,9 @@ class FurlleryDB {
 	public const string TABLE_GALLERIES = 'df_furllery_galleries';
 
 	public function maybe_update_gallery( int $edit_id ): void {
-		global $furllery_errors, $furllery_success_msg;
+		global $furllery_errors;
 
-		$furllery_errors      = [];
-		$furllery_success_msg = '';
+		$furllery_errors = [];
 
 		if ( ! $this->is_request_valid() ) {
 			return;
@@ -40,10 +39,9 @@ class FurlleryDB {
 	}
 
 	public function maybe_insert_gallery(): void {
-		global $furllery_errors, $furllery_success_msg;
+		global $furllery_errors;
 
-		$furllery_errors      = [];
-		$furllery_success_msg = '';
+		$furllery_errors = [];
 
 		if ( ! $this->is_request_valid() ) {
 			return;

@@ -14,9 +14,8 @@ Author URI: https://darkfox.pl
 
 ob_start();
 
-global $furllery_errors, $furllery_success_msg;
+global $furllery_errors;
 $furllery_errors = [];
-$furllery_success_msg = '';
 
 // Ensure some of WP Core is loaded.
 if ( ! class_exists( 'Link_List_Table' ) ) {

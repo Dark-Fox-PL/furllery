@@ -68,7 +68,7 @@ final class FurlleryAdmin {
 	}
 
 	public function plugin_add_gallery_page(): void {
-		global $furllery_errors, $furllery_success_msg;
+		global $furllery_errors;
 
 		$gallery_data = [];
 		$images_urls  = [];
