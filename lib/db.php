@@ -26,12 +26,12 @@ class FurlleryDB {
 			'active'      => $active,
 		], [ 'id' => $edit_id ], [ '%s', '%s', '%s', '%d' ], [ '%d' ] );
 
-		$query_args = [
+		$query_args   = [
 			'edit_id' => $edit_id,
 			'action'  => 'edit',
 			'success' => true,
 		];
-		$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=admin__upsert_gallery' ) );
+		$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=furllery__upsert_gallery' ) );
 
 		if ( wp_redirect( $redirect_url ) ) {
 			exit;
@@ -62,17 +62,24 @@ class FurlleryDB {
 		], [ '%s', '%s', '%s', '%d' ] );
 
 		if ( $result ) {
-			$query_args = [
+			$query_args   = [
 				'edit_id' => $wpdb->insert_id,
 				'action'  => 'create',
 				'success' => true,
 			];
-			$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=admin__upsert_gallery' ) );
+			$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=furllery__upsert_gallery' ) );
 
 			if ( wp_redirect( $redirect_url ) ) {
 				exit;
 			}
 		}
+	}
+
+	public function delete_gallery( int $gallery_id ): bool {
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . static::TABLE_GALLERIES;
+		return (bool) $wpdb->delete( $table_name, [ 'id' => $gallery_id ], [ '%d' ] );
 	}
 
 	protected function get_validated_data(): array {

@@ -30,9 +30,9 @@ final class FurlleryAdmin {
 		], 'dashicons-format-gallery' );
 
 		$menu_title = ! empty( $_GET['edit_id'] ) ? 'Edytuj Galerię' : 'Dodaj Galerię';
-		add_submenu_page( 'furllery', 'Furllery - ' . $menu_title, $menu_title, 'manage_options', 'admin__upsert_gallery', [
+		add_submenu_page( 'furllery', 'Furllery - ' . $menu_title, $menu_title, 'manage_options', 'furllery__upsert_gallery', [
 			$this,
-			'plugin_add_gallery_page',
+			'plugin_upsert_gallery_page',
 		] );
 
 		add_submenu_page( 'furllery', 'Furllery - Ustawienia', 'Ustawienia', 'manage_options', 'furllery__settings', [
@@ -52,6 +52,20 @@ final class FurlleryAdmin {
 	}
 
 	public function plugin_main_page(): void {
+		if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete_gallery' && isset( $_GET['gallery_id'] ) ) {
+			$gallery_id = intval( $_GET['gallery_id'] );
+			$removed = $this->db->delete_gallery( $gallery_id );
+
+			$query_args   = [
+				'action'  => 'delete_gallery',
+				'success' => $removed,
+			];
+			$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=furllery' ) );
+
+			wp_safe_redirect( $redirect_url );
+			exit;
+		}
+
 		require_once DF__FURLLERY_VIEW_DIR . 'admin__main.php';
 	}
 
@@ -59,11 +73,7 @@ final class FurlleryAdmin {
 		require_once DF__FURLLERY_VIEW_DIR . 'admin__settings.php';
 	}
 
-	public function plugin_galleries_page(): void {
-		require_once DF__FURLLERY_VIEW_DIR . 'admin__galleries.php';
-	}
-
-	public function plugin_add_gallery_page(): void {
+	public function plugin_upsert_gallery_page(): void {
 		global $furllery_errors;
 
 		$gallery_data = [];

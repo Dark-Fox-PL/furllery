@@ -52,9 +52,14 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 			return '';
 		}
 
+	  $delete_confirmation = sprintf(
+		  'return confirm(\'%s\');',
+		  sprintf( esc_html__( 'Czy na pewno chcesz usunąć galerię: %s?', 'df_furllery' ), $item['title'] ),
+	  );
+
 		$actions           = [];
-		$actions['edit']   = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=admin__upsert_gallery&edit_id=' . $item['id'] ), esc_html__( 'Edytuj', 'textdomain' ) );
-		$actions['delete'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=my-form&delete_id=' . $item['id'] ), esc_html__( 'Usuń', 'textdomain' ) );
+		$actions['edit']   = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=furllery__upsert_gallery&edit_id=' . $item['id'] ), esc_html__( 'Edytuj', 'df_furllery' ) );
+	  $actions['delete'] = sprintf( '<a href="%s" onclick="%s">%s</a>', admin_url( 'admin.php?page=furllery&action=delete_gallery&gallery_id=' . $item['id'] ), $delete_confirmation, esc_html__( 'Usuń', 'df_furllery' ) );
 
 		return $this->row_actions( $actions );
 	}
@@ -102,9 +107,17 @@ $table->prepare_items();
 
 <div class="wrap">
   <h1 class="wp-heading-inline"><?php echo esc_html__( 'Furllery' ); ?></h1>
-  <a href="<?php echo esc_url( admin_url( 'admin.php?page=admin__upsert_gallery' ) ); ?>" role="button"
+  <a href="<?php echo esc_url( admin_url( 'admin.php?page=furllery__upsert_gallery' ) ); ?>" role="button"
      class="page-title-action"><?php echo esc_html__( 'Dodaj nową galerię' ); ?></a>
   <hr class="wp-header-end">
+
+	<?php if ( isset( $_GET['success'] ) && '1' === $_GET['success'] ): ?>
+      <div class="notice notice-success is-dismissible">
+		  <?php if ( isset( $_GET['action'] ) && 'delete_gallery' === $_GET['action'] ): ?>
+            <p>Wskazana galeria została skasowana.</p>
+		  <?php endif; ?>
+      </div>
+	<?php endif; ?>
 
   <form id="df-furllery-galleries-table" method="GET">
     <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
