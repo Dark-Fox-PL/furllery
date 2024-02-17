@@ -3,10 +3,6 @@
 final class FurlleryAdmin {
 	public function __construct( protected FurlleryDB $db = new FurlleryDB ) { }
 
-	public function __destruct() {
-
-	}
-
 	public function initialize(): void {
 		$this->add_actions();
 	}
