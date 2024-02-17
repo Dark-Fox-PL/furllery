@@ -2,6 +2,7 @@ class FurlleryAdmin {
   constructor() {
     this.setProperties();
     this.addEvents();
+    this.addToastContainer();
   }
 
   setProperties() {
@@ -96,6 +97,42 @@ class FurlleryAdmin {
     this.$galleryContent.val(JSON.stringify(gallery));
   }
 
+  addToastContainer() {
+    const $body = jQuery( 'body' );
+    const $container = $body.find( 'furllery-toast-container' );
+
+    if ( 0 !== $container.length ) {
+      return;
+    }
+
+    $body.append( '<div class="furllery-toast-container">' )
+  }
+
 }
 
 jQuery(document).ready(() => new FurlleryAdmin());
+
+function furllery__copyToClipboard(element, text) {
+  const textarea = document.createElement('textarea');
+
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+
+  furllery__showToast( 'Skopiowano tekst: ' + text );
+}
+
+function furllery__showToast(message) {
+  const $toast = jQuery( '<div class="furllery-toast">' );
+
+  $toast.text( message );
+  jQuery( 'body .furllery-toast-container' ).append( $toast );
+
+  setTimeout(() => {
+    setTimeout(() => {
+      $toast.fadeOut( 400, () => $toast.remove() );
+    }, 1800);
+  }, 100);
+}

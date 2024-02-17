@@ -16,9 +16,14 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 	}
 
 	function column_images( $item ): string {
-    $json = json_decode( $item['content'], true );
-    return is_array( $json ) ? (string) count( $json ) : '0';
-  }
+		$json = json_decode( $item['content'], true );
+		return is_array( $json ) ? (string) count( $json ) : '0';
+	}
+
+	function column_actions( $item ): string {
+	  $copy_text = esc_attr__( sprintf( '[df_furllery id="%d"]', $item['id'] ) );
+    return '<span class="dashicons dashicons-media-code furllery-icon" onclick="furllery__copyToClipboard(this, \'' . $copy_text . '\')"></span>';
+	}
 
 	function column_active( $item ): string {
 		if ( 1 === (int) $item['active'] ) {
@@ -32,9 +37,10 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 		return [
 			'title'         => __( 'Tytuł', 'df_furllery' ),
 			'active'        => __( 'Aktywna', 'df_furllery' ),
-      'images'        => __( 'Obrazki', 'df_furllery' ),
 			'date_created'  => __( 'Data utworzenia', 'df_furllery' ),
 			'date_modified' => __( 'Ostatnia zmiana', 'df_furllery' ),
+  	  'images'        => __( 'Obrazki', 'df_furllery' ),
+  	  'actions'       => __( 'Akcje', 'df_furllery' ),
 		];
 	}
 
