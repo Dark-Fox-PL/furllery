@@ -9,15 +9,30 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 	}
 
 	function column_default( $item, $column_name ) {
-		return $item[ $column_name ];
+		return match ( $column_name ) {
+			'title' => sprintf( '<strong>%s</strong>', $item['title'] ),
+			default => $item[ $column_name ],
+		};
+	}
+
+	function column_images( $item ): string {
+    $json = json_decode( $item['content'], true );
+    return is_array( $json ) ? (string) count( $json ) : '0';
+  }
+
+	function column_active( $item ): string {
+		if ( 1 === (int) $item['active'] ) {
+			return '<span class="dashicons dashicons-yes"></span>';
+		} else {
+			return '<span class="dashicons dashicons-no"></span>';
+		}
 	}
 
 	function get_columns(): array {
 		return [
-			'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
-			'id'            => __( 'ID', 'df_furllery' ),
 			'title'         => __( 'Tytuł', 'df_furllery' ),
 			'active'        => __( 'Aktywna', 'df_furllery' ),
+      'images'        => __( 'Obrazki', 'df_furllery' ),
 			'date_created'  => __( 'Data utworzenia', 'df_furllery' ),
 			'date_modified' => __( 'Ostatnia zmiana', 'df_furllery' ),
 		];
@@ -25,7 +40,6 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 
 	function get_sortable_columns(): array {
 		return [
-			'id'            => [ 'id', true ],
 			'title'         => [ 'title', false ],
 			'active'        => [ 'active', false ],
 			'date_created'  => [ 'date_created', false ],
@@ -33,7 +47,19 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 		];
 	}
 
-	function process_bulk_action(): void {}
+	function handle_row_actions( $item, $column_name, $primary ) {
+		if ( $primary !== $column_name ) {
+			return '';
+		}
+
+		$actions           = [];
+		$actions['edit']   = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=admin__upsert_gallery&edit_id=' . $item['id'] ), esc_html__( 'Edytuj', 'textdomain' ) );
+		$actions['delete'] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=my-form&delete_id=' . $item['id'] ), esc_html__( 'Usuń', 'textdomain' ) );
+
+		return $this->row_actions( $actions );
+	}
+
+	function process_bulk_action(): void { }
 
 	function prepare_items(): void {
 		global $wpdb;
@@ -75,8 +101,9 @@ $table->prepare_items();
 ?>
 
 <div class="wrap">
-  <h1 class="wp-heading-inline"><?php echo esc_html__('Furllery'); ?></h1>
-  <a href="<?php echo esc_url( admin_url( 'admin.php?page=furllery__add_gallery' ) ); ?>" role="button" class="page-title-action"><?php echo esc_html__( 'Dodaj nową galerię' ); ?></a>
+  <h1 class="wp-heading-inline"><?php echo esc_html__( 'Furllery' ); ?></h1>
+  <a href="<?php echo esc_url( admin_url( 'admin.php?page=admin__upsert_gallery' ) ); ?>" role="button"
+     class="page-title-action"><?php echo esc_html__( 'Dodaj nową galerię' ); ?></a>
   <hr class="wp-header-end">
 
   <form id="df-furllery-galleries-table" method="GET">

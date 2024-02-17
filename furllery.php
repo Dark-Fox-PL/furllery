@@ -12,6 +12,8 @@ Version: 1.0.0
 Author URI: https://darkfox.pl
 */
 
+ob_start();
+
 global $furllery_errors, $furllery_success_msg;
 $furllery_errors = [];
 $furllery_success_msg = '';

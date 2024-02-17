@@ -34,10 +34,14 @@ function df_furllery_create_galleries_table(): void {
 	$queries[] = "CREATE INDEX {$table_name}_date_created_idx ON $table_name (date_created);";
 	$queries[] = "CREATE INDEX {$table_name}_date_modified_idx ON $table_name (date_modified);";
 
-	// And finally trigger for auto-update.
-	$queries[] = "CREATE TRIGGER {$table_name}_date_modified_upd AFTER UPDATE ON $table_name FOR EACH ROW SET date_modified = now();";
-
 	foreach ( $queries as $query ) {
 		$wpdb->query($query);
 	}
+
+	// Finally, create trigger for auto-update of date_modified field.
+	$trigger_query = "CREATE TRIGGER {$table_name}_date_modified_upd 
+                      BEFORE UPDATE ON $table_name FOR EACH ROW 
+                      SET NEW.date_modified = NOW();";
+	$wpdb->query( $trigger_query );
+
 }

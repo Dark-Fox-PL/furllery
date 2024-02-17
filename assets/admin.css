@@ -19,8 +19,8 @@ form.gallery-form {
     flex-direction: row;
 
     .image-wrapper {
-      max-width: 150px;
-      max-height: 150px;
+      width: 150px;
+      height: 150px;
       margin-right: 10px;
       position: relative;
       overflow: hidden;
@@ -58,18 +58,5 @@ form.gallery-form {
         border-radius: 5px;
       }
     }
-  }
-}
-
-.error-holder {
-  color: orangered;
-
-  strong {
-    font-size: 1.25em;
-  }
-
-  ul {
-    padding-left: 20px;
-    list-style: disc;
   }
 }

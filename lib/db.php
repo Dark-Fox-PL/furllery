@@ -3,9 +3,10 @@
 class FurlleryDB {
 	public const string TABLE_GALLERIES = 'df_furllery_galleries';
 
-	public function maybe_insert_gallery(): void {
+	public function maybe_update_gallery( int $edit_id ): void {
 		global $furllery_errors, $furllery_success_msg;
 
+		$furllery_errors      = [];
 		$furllery_success_msg = '';
 
 		if ( ! $this->is_request_valid() ) {
@@ -13,11 +14,74 @@ class FurlleryDB {
 		}
 
 		global $wpdb;
+		[ $title, $description, $content, $active ] = $this->get_validated_data();
 
-		$furllery_errors = [];
+		if ( 0 < count( $furllery_errors ) ) {
+			return;
+		}
+
+		$wpdb->update( $wpdb->prefix . static::TABLE_GALLERIES, [
+			'title'       => $title,
+			'description' => $description,
+			'content'     => $content,
+			'active'      => $active,
+		], [ 'id' => $edit_id ], [ '%s', '%s', '%s', '%d' ], [ '%d' ] );
+
+		$query_args = [
+			'edit_id' => $edit_id,
+			'action'  => 'edit',
+			'success' => true,
+		];
+		$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=admin__upsert_gallery' ) );
+
+		if ( wp_redirect( $redirect_url ) ) {
+			exit;
+		}
+	}
+
+	public function maybe_insert_gallery(): void {
+		global $furllery_errors, $furllery_success_msg;
+
+		$furllery_errors      = [];
+		$furllery_success_msg = '';
+
+		if ( ! $this->is_request_valid() ) {
+			return;
+		}
+
+		global $wpdb;
+		[ $title, $description, $content, $active ] = $this->get_validated_data();
+
+		if ( 0 < count( $furllery_errors ) ) {
+			return;
+		}
+
+		$result = $wpdb->insert( $wpdb->prefix . static::TABLE_GALLERIES, [
+			'title'       => $title,
+			'description' => $description,
+			'content'     => $content,
+			'active'      => $active,
+		], [ '%s', '%s', '%s', '%d' ] );
+
+		if ( $result ) {
+			$query_args = [
+				'edit_id' => $wpdb->insert_id,
+				'action'  => 'create',
+				'success' => true,
+			];
+			$redirect_url = add_query_arg( $query_args, admin_url( 'admin.php?page=admin__upsert_gallery' ) );
+
+			if ( wp_redirect( $redirect_url ) ) {
+				exit;
+			}
+		}
+	}
+
+	protected function get_validated_data(): array {
+		global $furllery_errors;
 
 		$title       = sanitize_text_field( $_POST['title'] );
-		$description = sanitize_textarea_field( $_POST['description'] );
+		$description = wp_kses_post( $_POST['description'] );
 		$content     = sanitize_text_field( $_POST['content'] );
 		$active      = sanitize_text_field( $_POST['active'] );
 
@@ -35,14 +99,7 @@ class FurlleryDB {
 			$furllery_errors['content'] = __( 'Plugin nie może przetworzyć identyfikatorów dodanych zdjęć, spróbuj ponownie.' );
 		}
 
-		$wpdb->insert( $wpdb->prefix . static::TABLE_GALLERIES, [
-			'title'       => $title,
-			'description' => $description,
-			'content'     => $content,
-			'active'      => $active,
-		], [ '%s', '%s', '%s', '%d' ] );
-
-		$furllery_success_msg = sprintf( 'Galeria "%s" została utworzona.', $title );
+		return [ $title, $description, $content, $active ];
 	}
 
 	protected function is_request_valid(): bool {

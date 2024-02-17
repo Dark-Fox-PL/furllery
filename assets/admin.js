@@ -25,7 +25,6 @@ class FurlleryAdmin {
       });
 
       media_frame.on( 'select', () => this.handleSelectedImages( media_frame ) );
-
       media_frame.open();
     });
 

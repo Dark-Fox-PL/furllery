@@ -1,7 +1,11 @@
 <?php
 
 final class FurlleryAdmin {
-	public function __construct(protected FurlleryDB $db = new FurlleryDB) {}
+	public function __construct( protected FurlleryDB $db = new FurlleryDB ) { }
+
+	public function __destruct() {
+
+	}
 
 	public function initialize(): void {
 		$this->add_actions();
@@ -12,6 +16,9 @@ final class FurlleryAdmin {
 	}
 
 	public function add_admin_js(): void {
+		wp_enqueue_script( 'lodash', '...' );
+		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
+
 		wp_enqueue_script( 'furllery-admin-script', plugins_url( 'assets/admin.js', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'furllery-admin-script', get_template_directory_uri() . '/js/admin.js', [
 			'jquery',
@@ -25,10 +32,13 @@ final class FurlleryAdmin {
 			$this,
 			'plugin_main_page',
 		], 'dashicons-format-gallery' );
-		add_submenu_page( 'furllery', 'Furllery - Dodaj galerię', 'Dodaj Galerię', 'manage_options', 'furllery__add_gallery', [
+
+		$menu_title = ! empty( $_GET['edit_id'] ) ? 'Edytuj Galerię' : 'Dodaj Galerię';
+		add_submenu_page( 'furllery', 'Furllery - ' . $menu_title, $menu_title, 'manage_options', 'admin__upsert_gallery', [
 			$this,
 			'plugin_add_gallery_page',
 		] );
+
 		add_submenu_page( 'furllery', 'Furllery - Ustawienia', 'Ustawienia', 'manage_options', 'furllery__settings', [
 			$this,
 			'plugin_settings_page',
@@ -40,7 +50,7 @@ final class FurlleryAdmin {
 			'id'     => 'furllery-add',
 			'parent' => 'new-content',
 			'title'  => 'Galerię Furllery',
-			'href'   => admin_url() . 'admin.php?page=furllery__add_gallery',
+			'href'   => admin_url() . 'admin.php?page=admin__upsert_gallery',
 		];
 		$wp_admin_bar->add_node( $args );
 	}
@@ -60,8 +70,34 @@ final class FurlleryAdmin {
 	public function plugin_add_gallery_page(): void {
 		global $furllery_errors, $furllery_success_msg;
 
-		$this->db->maybe_insert_gallery();
-		require_once DF__FURLLERY_VIEW_DIR . 'admin__add_gallery.php';
+		$gallery_data = [];
+		$images_urls  = [];
+
+		if ( ! empty( $_GET['edit_id'] ) ) {
+			global $wpdb;
+
+			$gallery_id   = intval( $_GET['edit_id'] );
+			$table_name   = $wpdb->prefix . FurlleryDB::TABLE_GALLERIES;
+			$gallery_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $gallery_id ), ARRAY_A );
+
+			$images = json_decode( $gallery_data['content'], true );
+
+			if ( is_array( $images ) && 0 < count( $images ) ) {
+				foreach ( $images as $image_id ) {
+					$image_url = wp_get_attachment_image_src( $image_id );
+
+					if ( $image_url ) {
+						$images_urls[ $image_id ] = $image_url[0];
+					}
+				}
+			}
+
+			$this->db->maybe_update_gallery( $gallery_id );
+		} else {
+			$this->db->maybe_insert_gallery();
+		}
+
+		require_once DF__FURLLERY_VIEW_DIR . 'admin__upsert_gallery.php';
 	}
 
 	protected function add_actions(): FurlleryAdmin {
