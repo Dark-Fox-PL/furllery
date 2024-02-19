@@ -5,12 +5,25 @@ class Furllery {
 		return $this->initialize_plugin();
 	}
 
+	public function add_furllery_js(): void {
+		wp_enqueue_script( 'lodash', '...' );
+		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
+
+		wp_enqueue_script(
+			'furllery-script',
+			plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ),
+			[ 'jquery' ],
+			'1.0',
+			true,
+		);
+	}
+
 	protected function initialize_plugin(): Furllery {
 		return $this->maybe_run_admin()->run_plugin();
 	}
 
 	protected function run_plugin(): Furllery {
-		return $this->add_fields_to_media_library();
+		return $this->add_fields_to_media_library()->create_shortcodes()->add_actions();
 	}
 
 	protected function maybe_run_admin(): Furllery {
@@ -58,6 +71,27 @@ class Furllery {
 		add_filter( 'attachment_fields_to_save', $fields_save, 10, 2 );
 
 		return $this;
+	}
+
+	protected function add_actions(): Furllery {
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_furllery_js' ] );
+
+		return $this;
+	}
+
+	protected function create_shortcodes(): Furllery {
+		$this->create_gallery_shortcode();
+
+		return $this;
+	}
+
+	protected function create_gallery_shortcode(): void {
+		add_shortcode( 'furllery', function ( $attr ): string {
+			$default = [ 'gallery' => - 1 ];
+			$attr    = shortcode_atts( $default, $attr );
+
+			return sprintf( '<div data-gallery="%d"></div>', (int) esc_attr( $attr['gallery'] ) );
+		} );
 	}
 
 }
