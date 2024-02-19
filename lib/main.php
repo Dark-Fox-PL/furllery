@@ -90,7 +90,7 @@ class Furllery {
 			$default = [ 'id' => - 1 ];
 			$attr    = shortcode_atts( $default, $attr );
 
-			return sprintf( '<div data-gallery="%d"></div>', (int) esc_attr( $attr['id'] ) );
+			return sprintf( '<div class="df-furllery" data-gallery="%d"></div>', (int) esc_attr( $attr['id'] ) );
 		} );
 	}
 
