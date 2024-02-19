@@ -86,11 +86,11 @@ class Furllery {
 	}
 
 	protected function create_gallery_shortcode(): void {
-		add_shortcode( 'furllery', function ( $attr ): string {
-			$default = [ 'gallery' => - 1 ];
+		add_shortcode( 'df_furllery', function ( $attr ): string {
+			$default = [ 'id' => - 1 ];
 			$attr    = shortcode_atts( $default, $attr );
 
-			return sprintf( '<div data-gallery="%d"></div>', (int) esc_attr( $attr['gallery'] ) );
+			return sprintf( '<div data-gallery="%d"></div>', (int) esc_attr( $attr['id'] ) );
 		} );
 	}
 
