@@ -13,7 +13,7 @@ class FurlleryDB {
 		}
 
 		global $wpdb;
-		[ $title, $description, $content, $active ] = $this->get_validated_data();
+		[ $title, $description, $content, $active, $thumbnail ] = $this->get_validated_data();
 
 		if ( 0 < count( $furllery_errors ) ) {
 			return;
@@ -24,7 +24,8 @@ class FurlleryDB {
 			'description' => $description,
 			'content'     => $content,
 			'active'      => $active,
-		], [ 'id' => $edit_id ], [ '%s', '%s', '%s', '%d' ], [ '%d' ] );
+			'thumbnail'   => $thumbnail,
+		], [ 'id' => $edit_id ], [ '%s', '%s', '%s', '%d', '%d' ], [ '%d' ] );
 
 		$query_args   = [
 			'edit_id' => $edit_id,
@@ -48,7 +49,7 @@ class FurlleryDB {
 		}
 
 		global $wpdb;
-		[ $title, $description, $content, $active ] = $this->get_validated_data();
+		[ $title, $description, $content, $active, $thumbnail ] = $this->get_validated_data();
 
 		if ( 0 < count( $furllery_errors ) ) {
 			return;
@@ -59,7 +60,8 @@ class FurlleryDB {
 			'description' => $description,
 			'content'     => $content,
 			'active'      => $active,
-		], [ '%s', '%s', '%s', '%d' ] );
+			'thumbnail'   => $thumbnail,
+		], [ '%s', '%s', '%s', '%d', '%d' ] );
 
 		if ( $result ) {
 			$query_args   = [
@@ -89,6 +91,7 @@ class FurlleryDB {
 		$description = wp_kses_post( $_POST['description'] );
 		$content     = sanitize_text_field( $_POST['content'] );
 		$active      = sanitize_text_field( $_POST['active'] );
+		$thumbnail   = sanitize_text_field( $_POST['thumbnail'] );
 
 		$content_json = json_decode( $content, true );
 
@@ -104,7 +107,7 @@ class FurlleryDB {
 			$furllery_errors['content'] = __( 'Plugin nie może przetworzyć identyfikatorów dodanych zdjęć, spróbuj ponownie.' );
 		}
 
-		return [ $title, $description, $content, $active ];
+		return [ $title, $description, $content, $active, $thumbnail ];
 	}
 
 	protected function is_request_valid(): bool {

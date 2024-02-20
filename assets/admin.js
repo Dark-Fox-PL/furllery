@@ -8,8 +8,10 @@ class FurlleryAdmin {
   setProperties() {
     this.$galleryForm = jQuery('form.gallery-form');
     this.$selectedImages = this.$galleryForm.find('.images-wrapper');
-    this.$singleImageTpl = this.$galleryForm.find('.image-wrapper');
+    this.$singleImageTpl = this.$galleryForm.find('.image-wrapper.hidden');
     this.$galleryContent = this.$galleryForm.find('#gallery_content');
+    this.$thumbnailWrapper = this.$galleryForm.find('.thumbnail-wrapper');
+    this.$thumbnailContent = this.$galleryForm.find('#gallery_thumbnail');
   }
 
   addEvents() {
@@ -25,12 +27,25 @@ class FurlleryAdmin {
         multiple: true,
       });
 
-      media_frame.on( 'select', () => this.handleSelectedImages( media_frame ) );
+      media_frame.on( 'select', () => this.handleSelectedImages( this.$selectedImages, this.$galleryContent, media_frame ) );
+      media_frame.open();
+    });
+
+    $body.on('click', '#furllery-select-thumbnail', event => {
+      event.preventDefault();
+
+      const media_frame = wp.media({
+        title: 'Wybierz okładkę',
+        button: { text: 'Wybierz' },
+        multiple: false,
+      });
+
+      media_frame.on( 'select', () => this.handleSelectedImages( this.$thumbnailWrapper, this.$thumbnailContent, media_frame ) );
       media_frame.open();
     });
 
     // Delete photo.
-    $body.on('click', '.image-wrapper .delete-image', event => {
+    $body.on('click', '.images-wrapper .image-wrapper .delete-image', event => {
       event.preventDefault();
 
       const $target = jQuery(event.target).parent();
@@ -61,14 +76,38 @@ class FurlleryAdmin {
       $target.remove();
       this.$galleryContent.val(JSON.stringify(gallery));
     });
+
+    // Delete thumbnail
+    $body.on('click', '.thumbnail-wrapper .image-wrapper .delete-image', event => {
+      event.preventDefault();
+
+      const $target = jQuery(event.target).parent();
+      const imageId = $target.data('image-id') ?? -1;
+
+      if (-1 === imageId) {
+        alert('Nope...');
+        return;
+      }
+
+      const result = confirm('Czy chcesz usunąć okładkę galerii?');
+
+      if (!result) {
+        return;
+      }
+
+      this.$galleryContent.val(-1);
+    });
   }
 
-  handleSelectedImages(media_frame) {
+  handleSelectedImages($wrapper, $input, media_frame) {
     const selection = media_frame.state().get('selection').toJSON();
-    const gallery = JSON.parse(this.$galleryContent.val());
+    const gallery = JSON.parse($input.val());
+    const isGalleryObject = 'object' === typeof gallery;
+
+    let imageId = -1;
 
     for (const image of selection) {
-      if (gallery.find((item) => item === image.id)) {
+      if ( isGalleryObject && gallery.find((item) => item === image.id)) {
         continue;
       }
 
@@ -82,7 +121,11 @@ class FurlleryAdmin {
         }
       }
 
-      gallery.push(image.id);
+      if ( isGalleryObject ) {
+        gallery.push(image.id);
+      } else {
+        imageId = image.id;
+      }
 
       const $holder = this.$singleImageTpl.clone();
       const $img = jQuery('<img alt="podgląd obrazka">').prop('src', url)
@@ -91,10 +134,10 @@ class FurlleryAdmin {
       $holder.append($img);
       $holder.removeClass('hidden');
 
-      this.$selectedImages.append($holder);
+      $holder.appendTo($wrapper);
     }
 
-    this.$galleryContent.val(JSON.stringify(gallery));
+    $input.val( isGalleryObject ? JSON.stringify(gallery) : imageId );
   }
 
   addToastContainer() {

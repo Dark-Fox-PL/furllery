@@ -13,15 +13,18 @@ form.gallery-form {
     border: 0;
   }
 
+  .thumbnail-wrapper,
   .images-wrapper {
     margin-top: 10px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 
     .image-wrapper {
-      width: 150px;
-      height: 150px;
-      margin-right: 10px;
+      width: 140px;
+      height: 140px;
+      margin-right: 2px;
+      margin-bottom: 2px;
       position: relative;
       overflow: hidden;
 

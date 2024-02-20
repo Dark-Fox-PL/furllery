@@ -54,7 +54,7 @@ final class FurlleryAdmin {
 	public function plugin_main_page(): void {
 		if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete_gallery' && isset( $_GET['gallery_id'] ) ) {
 			$gallery_id = intval( $_GET['gallery_id'] );
-			$removed = $this->db->delete_gallery( $gallery_id );
+			$removed    = $this->db->delete_gallery( $gallery_id );
 
 			$query_args   = [
 				'action'  => 'delete_gallery',
@@ -76,8 +76,9 @@ final class FurlleryAdmin {
 	public function plugin_upsert_gallery_page(): void {
 		global $furllery_errors;
 
-		$gallery_data = [];
-		$images_urls  = [];
+		$gallery_data  = [];
+		$images_urls   = [];
+		$thumbnail_url = '';
 
 		if ( ! empty( $_GET['edit_id'] ) ) {
 			global $wpdb;
@@ -87,6 +88,11 @@ final class FurlleryAdmin {
 			$gallery_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $gallery_id ), ARRAY_A );
 
 			$images = json_decode( $gallery_data['content'], true );
+
+			if ( -1 !== $gallery_data['thumbnail'] ) {
+				$thumbnail_url = wp_get_attachment_image_src( $gallery_data['thumbnail'] );
+				$thumbnail_url = is_array( $thumbnail_url ) ? $thumbnail_url[0] : '';
+			}
 
 			if ( is_array( $images ) && 0 < count( $images ) ) {
 				foreach ( $images as $image_id ) {

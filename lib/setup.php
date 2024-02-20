@@ -14,11 +14,12 @@ function df_furllery_create_galleries_table(): void {
 
 	// Creation query.
 	$sql = "CREATE TABLE IF NOT EXISTS $table_name (
-    			id mediumint(9) NOT NULL AUTO_INCREMENT,
+    			id int(9) NOT NULL AUTO_INCREMENT,
 	            title varchar(255) NOT NULL,
 	            description TEXT DEFAULT '' NOT NULL,
 	            active bool DEFAULT true NOT NULL,
 	            content text DEFAULT '' NOT NULL,
+	            thumbnail mediumint(9) DEFAULT -1 NOT NULL,
 	            date_created datetime DEFAULT now() NOT NULL,
 	            date_modified datetime,
 	            PRIMARY KEY (id)

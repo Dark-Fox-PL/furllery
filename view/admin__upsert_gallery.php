@@ -39,72 +39,93 @@
 
       <table class="form-table" role="presentation">
         <tbody>
-        <tr class="form-field form-required">
-          <th scope="row"><label for="gallery_title"><?php echo esc_html__( 'Nazwa', 'df_furllery' ) ?></label></th>
-          <td>
-            <input
-              name="title"
-              type="text"
-              id="gallery_title"
-              value="<?php echo esc_attr( $gallery_data['title'] ?? '' ) ?>"
-              aria-required="true"
-              autocapitalize="none"
-              autocorrect="off"
-              autocomplete="off"
-              maxlength="255"
-              class="regular-text <?php echo isset( $furllery_errors['title'] ) ? 'has-error' : ''; ?>"
-            >
-          </td>
-        </tr>
+          <tr class="form-field form-required">
+            <th scope="row"><label for="gallery_title"><?php echo esc_html__( 'Nazwa', 'df_furllery' ) ?></label></th>
+            <td>
+              <input
+                name="title"
+                type="text"
+                id="gallery_title"
+                value="<?php echo esc_attr( $gallery_data['title'] ?? '' ) ?>"
+                aria-required="true"
+                autocapitalize="none"
+                autocorrect="off"
+                autocomplete="off"
+                maxlength="255"
+                class="regular-text <?php echo isset( $furllery_errors['title'] ) ? 'has-error' : ''; ?>"
+              >
+            </td>
+          </tr>
 
-        <tr class="form-field">
-          <th scope="row"><label for="gallery_description"><?php echo esc_html__( 'Opis', 'df_furllery' ) ?></label>
-          </th>
-          <td>
-          <?php
+          <tr class="form-field">
+            <th scope="row"><label for="gallery_description"><?php echo esc_html__( 'Opis', 'df_furllery' ) ?></label>
+            </th>
+            <td>
+            <?php
 
-          $editor_args = [
-            'textarea_name' => 'description',
-            'textarea_rows' => 5,
-            'media_buttons' => false,
-            'tinymce'       => false,
-          ];
-          wp_editor( $gallery_data['description'] ?? '', 'gallery_description', $editor_args );
+            $editor_args = [
+              'textarea_name' => 'description',
+              'textarea_rows' => 5,
+              'media_buttons' => false,
+              'tinymce'       => false,
+            ];
+            wp_editor( $gallery_data['description'] ?? '', 'gallery_description', $editor_args );
 
-          ?>
-          </td>
-        </tr>
+            ?>
+            </td>
+          </tr>
 
-        <tr class="form-field form-required">
-          <th scope="row"><label
-              for="gallery_active"><?php echo esc_html__( 'Galeria aktywna', 'df_furllery' ) ?></label></th>
-          <td>
-            <select id="gallery_active" name="active">
-              <option value="1" <?php selected( $gallery_data['active'] ?? '', 1 ); ?>>Tak</option>
-              <option value="0" <?php selected( $gallery_data['active'] ?? '', 0 ); ?>>Nie</option>
-            </select>
-          </td>
-        </tr>
+          <tr class="form-field form-required">
+            <th scope="row"><label
+                for="gallery_active"><?php echo esc_html__( 'Galeria aktywna', 'df_furllery' ) ?></label></th>
+            <td>
+              <select id="gallery_active" name="active">
+                <option value="1" <?php selected( $gallery_data['active'] ?? '', 1 ); ?>>Tak</option>
+                <option value="0" <?php selected( $gallery_data['active'] ?? '', 0 ); ?>>Nie</option>
+              </select>
+            </td>
+          </tr>
 
-        <tr class="form-field form-required">
-          <th scope="row"><label for="gallery_content"><?php echo esc_html__( 'Zdjęcia', 'df_furllery' ) ?></label></th>
-          <td>
-            <input name="content" type="hidden" id="gallery_content"
-                   value="<?php echo esc_attr( $gallery_data['content'] ?? '[]' ) ?>" aria-required="true"
-                   autocapitalize="none" autocorrect="off" autocomplete="off">
-            <button id="furllery-select-images" class="page-title-action"
-                    type="button"><?php echo esc_html__( 'Wybierz zdjęcia', 'df_furllery' ); ?></button>
+          <tr class="form-field form-required">
+            <th scope="row"><label for="gallery_thumbnail"><?php echo esc_html__( 'Okładka', 'df_furllery' ) ?></label>
+            </th>
+            <td>
+              <input name="thumbnail" type="hidden" id="gallery_thumbnail"
+                     value="<?php echo esc_attr( $gallery_data['thumbnail'] ?? '[]' ) ?>" aria-required="true">
+              <button id="furllery-select-thumbnail" class="page-title-action"
+                      type="button"><?php echo esc_html__( 'Wybierz okładkę galerii', 'df_furllery' ); ?></button>
 
-            <div class="images-wrapper">
-				<?php foreach ( $images_urls as $image_id => $image_url ): ?>
+              <div class="thumbnail-wrapper">
+		            <?php if ( '' !== $thumbnail_url ): ?>
+                  <div class="image-wrapper" data-image-id="<?php echo esc_attr( $gallery_data['thumbnail'] ); ?>">
+                    <div class="dashicons-before dashicons-trash delete-image"></div>
+                    <img src="<?php echo $thumbnail_url; ?>" alt="Okładka galerii" width="150" height="150">
+                  </div>
+		            <?php endif; ?>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="form-field form-required">
+            <th scope="row"><label for="gallery_content"><?php echo esc_html__( 'Zdjęcia', 'df_furllery' ) ?></label>
+            </th>
+            <td>
+              <input name="content" type="hidden" id="gallery_content"
+                     value="<?php echo esc_attr( $gallery_data['content'] ?? '[]' ) ?>" aria-required="true"
+                     autocapitalize="none" autocorrect="off" autocomplete="off">
+              <button id="furllery-select-images" class="page-title-action"
+                      type="button"><?php echo esc_html__( 'Wybierz zdjęcia', 'df_furllery' ); ?></button>
+
+              <div class="images-wrapper">
+                <?php foreach ( $images_urls as $image_id => $image_url ): ?>
                   <div class="image-wrapper" data-image-id="<?php echo esc_attr( $image_id ); ?>">
                     <div class="dashicons-before dashicons-trash delete-image"></div>
                     <img src="<?php echo $image_url; ?>" alt="Element galerii" width="150" height="150">
                   </div>
-				<?php endforeach; ?>
-            </div>
-          </td>
-        </tr>
+                <?php endforeach; ?>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
 
