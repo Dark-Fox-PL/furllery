@@ -5,17 +5,18 @@ class Furllery {
 		return $this->initialize_plugin();
 	}
 
-	public function add_furllery_js(): void {
+	public function add_furllery_assets(): void {
+		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ) );
+
 		wp_enqueue_script( 'lodash', '...' );
 		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
 
-		wp_enqueue_script(
-			'furllery-script',
-			plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ),
-			[ 'jquery' ],
-			'1.0',
-			true,
-		);
+		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.1', true, );
+		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0', true, );
+	}
+
+	public function add_overlay(): void {
+		echo '<div class="df-furllery-body-overlay"><div class="df-close-button"></div><div class="df-furllery-loader"></div></div>';
 	}
 
 	protected function initialize_plugin(): Furllery {
@@ -23,7 +24,7 @@ class Furllery {
 	}
 
 	protected function run_plugin(): Furllery {
-		return $this->add_fields_to_media_library()->create_shortcodes()->add_actions();
+		return $this->add_fields_to_media_library()->create_shortcodes()->add_actions()->create_ajaxes();
 	}
 
 	protected function maybe_run_admin(): Furllery {
@@ -74,7 +75,8 @@ class Furllery {
 	}
 
 	protected function add_actions(): Furllery {
-		add_action( 'wp_enqueue_scripts', [ $this, 'add_furllery_js' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_furllery_assets' ] );
+		add_action( 'wp_footer', [ $this, 'add_overlay' ] );
 
 		return $this;
 	}
@@ -86,11 +88,49 @@ class Furllery {
 	}
 
 	protected function create_gallery_shortcode(): void {
-		add_shortcode( 'df_furllery', function ( $attr ): string {
+		global $wpdb;
+
+		add_shortcode( 'df_furllery', function ( $attr ) use ( $wpdb ): string {
 			$default = [ 'id' => - 1 ];
 			$attr    = shortcode_atts( $default, $attr );
 
-			return sprintf( '<div class="df-furllery" data-gallery="%d"></div>', (int) esc_attr( $attr['id'] ) );
+			$id      = (int) esc_attr( $attr['id'] );
+			$table   = $wpdb->prefix . FurlleryDB::TABLE_GALLERIES;
+			$gallery = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE id = %d", $id ), ARRAY_A );
+
+			if ( ! $gallery ) {
+				return '';
+			}
+
+			$image = '';
+
+			if ( 0 <= $gallery['thumbnail'] ) {
+				$image = wp_get_attachment_image( $gallery['thumbnail'], [ 200, 200 ] );
+			} else {
+				$images = json_decode( $gallery['content'] ?? '[]', true );
+
+				if ( is_array( $images ) && 0 < count( $images ) ) {
+					$image = wp_get_attachment_image( $images[0], [ 200, 200 ] );
+				}
+			}
+
+			return sprintf( '<div class="df-furllery" data-gallery="%d"><div class="df-furllery-overlay"></div>%s</div>', $id, $image );
+		} );
+	}
+
+	protected function create_ajaxes(): Furllery {
+		$this->ajax__load_gallery();
+
+		return $this;
+	}
+
+	protected function ajax__load_gallery() {
+		add_action( 'wp_ajax_load_gallery', function () {
+			$response = array(
+				'message' => 'To jest odpowiedź z żądania AJAX!',
+			);
+			// Zwróć odpowiedź jako JSON
+			wp_send_json($response);
 		} );
 	}
 
