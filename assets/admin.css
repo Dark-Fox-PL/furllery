@@ -64,6 +64,15 @@ form.gallery-form {
   }
 }
 
+.df-sortable-placeholder {
+  border: 1px rgba(13, 102, 194) solid;
+  background: rgba(13, 102, 194, 0.45);
+  border-radius: 5px;
+  width: 136px;
+  height: 136px;
+  margin: 2px;
+}
+
 .furllery-icon {
   font-size: 30px;
   width: 30px;

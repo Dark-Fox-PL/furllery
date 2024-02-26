@@ -3,6 +3,7 @@ class FurlleryAdmin {
     this.setProperties();
     this.addEvents();
     this.addToastContainer();
+    this.sortImages();
   }
 
   setProperties() {
@@ -23,11 +24,11 @@ class FurlleryAdmin {
 
       const media_frame = wp.media({
         title: 'Wybierz obraz',
-        button: { text: 'Wybierz' },
+        button: {text: 'Wybierz'},
         multiple: true,
       });
 
-      media_frame.on( 'select', () => this.handleSelectedImages( this.$selectedImages, this.$galleryContent, media_frame ) );
+      media_frame.on('select', () => this.handleSelectedImages(this.$selectedImages, this.$galleryContent, media_frame));
       media_frame.open();
     });
 
@@ -36,11 +37,11 @@ class FurlleryAdmin {
 
       const media_frame = wp.media({
         title: 'Wybierz okładkę',
-        button: { text: 'Wybierz' },
+        button: {text: 'Wybierz'},
         multiple: false,
       });
 
-      media_frame.on( 'select', () => this.handleSelectedImages( this.$thumbnailWrapper, this.$thumbnailContent, media_frame ) );
+      media_frame.on('select', () => this.handleSelectedImages(this.$thumbnailWrapper, this.$thumbnailContent, media_frame));
       media_frame.open();
     });
 
@@ -107,7 +108,7 @@ class FurlleryAdmin {
     let imageId = -1;
 
     for (const image of selection) {
-      if ( isGalleryObject && gallery.find((item) => item === image.id)) {
+      if (isGalleryObject && gallery.find((item) => item === image.id)) {
         continue;
       }
 
@@ -121,7 +122,7 @@ class FurlleryAdmin {
         }
       }
 
-      if ( isGalleryObject ) {
+      if (isGalleryObject) {
         gallery.push(image.id);
       } else {
         imageId = image.id;
@@ -137,18 +138,38 @@ class FurlleryAdmin {
       $holder.appendTo($wrapper);
     }
 
-    $input.val( isGalleryObject ? JSON.stringify(gallery) : imageId );
+    $input.val(isGalleryObject ? JSON.stringify(gallery) : imageId);
   }
 
   addToastContainer() {
-    const $body = jQuery( 'body' );
-    const $container = $body.find( 'furllery-toast-container' );
+    const $body = jQuery('body');
+    const $container = $body.find('furllery-toast-container');
 
-    if ( 0 !== $container.length ) {
+    if (0 !== $container.length) {
       return;
     }
 
-    $body.append( '<div class="furllery-toast-container">' )
+    $body.append('<div class="furllery-toast-container">')
+  }
+
+  sortImages() {
+    this.$selectedImages.sortable({
+      placeholder: 'df-sortable-placeholder',
+      tolerance: 'pointer',
+
+      update: () => {
+        const gallery = [];
+
+        this.$selectedImages.find('.image-wrapper').each((index, image) => {
+          gallery.push(parseInt(image.dataset.imageId));
+        })
+
+        console.log( JSON.stringify(gallery) );
+        this.$galleryContent.val(JSON.stringify(gallery));
+      }
+    });
+
+    this.$selectedImages.disableSelection();
   }
 
 }
@@ -164,18 +185,18 @@ function furllery__copyToClipboard(element, text) {
   document.execCommand('copy');
   document.body.removeChild(textarea);
 
-  furllery__showToast( 'Skopiowano tekst: ' + text );
+  furllery__showToast('Skopiowano tekst: ' + text);
 }
 
 function furllery__showToast(message) {
-  const $toast = jQuery( '<div class="furllery-toast">' );
+  const $toast = jQuery('<div class="furllery-toast">');
 
-  $toast.text( message );
-  jQuery( 'body .furllery-toast-container' ).append( $toast );
+  $toast.text(message);
+  jQuery('body .furllery-toast-container').append($toast);
 
   setTimeout(() => {
     setTimeout(() => {
-      $toast.fadeOut( 400, () => $toast.remove() );
+      $toast.fadeOut(400, () => $toast.remove());
     }, 1800);
   }, 100);
 }

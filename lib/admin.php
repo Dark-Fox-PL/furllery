@@ -15,6 +15,7 @@ final class FurlleryAdmin {
 		wp_enqueue_script( 'lodash', '...' );
 		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
 
+		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script( 'furllery-admin-script', plugins_url( 'assets/admin.js', dirname( __FILE__ ) ) );
 		wp_enqueue_script( 'furllery-admin-script', get_template_directory_uri() . '/js/admin.js', [
 			'jquery',
