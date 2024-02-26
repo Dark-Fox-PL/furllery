@@ -157,6 +157,9 @@ class FurlleryAdmin {
       placeholder: 'df-sortable-placeholder',
       tolerance: 'pointer',
 
+      start: () => { this.$selectedImages.find( '.delete-image' ).addClass( 'hidden' ) },
+      stop: () => { this.$selectedImages.find( '.delete-image' ).removeClass( 'hidden' ) },
+
       update: () => {
         const gallery = [];
 
