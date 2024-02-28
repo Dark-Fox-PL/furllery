@@ -30,7 +30,22 @@ class FurlleryGallery {
   }
 
   loadGallery() {
-
+    jQuery.ajax({
+      url: wp_core.ajaxurl,
+      type: 'POST',
+      data: {
+        action: 'load_furllery',
+        id: this.id,
+      },
+      success: function(response) {
+        // Obsługa udanej odpowiedzi
+        console.log(response);
+      },
+      error: function(xhr, status, error) {
+        // Obsługa błędu
+        console.error(error);
+      }
+    });
   }
 
   closeGallery() {

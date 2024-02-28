@@ -11,8 +11,11 @@ class Furllery {
 		wp_enqueue_script( 'lodash', '...' );
 		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
 
-		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.1', true, );
-		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0', true, );
+		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.1', true );
+		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0', true );
+
+		// Dodaj przekazanie zmiennej ajaxurl dla furllery_gallery.js
+		wp_localize_script( 'furllery-script-gallery', 'wp_core', [ 'ajaxurl' => admin_url( 'admin-ajax.php' ) ] );
 	}
 
 	public function add_overlay(): void {
@@ -137,12 +140,45 @@ class Furllery {
 	}
 
 	protected function ajax__load_gallery() {
-		add_action( 'wp_ajax_load_gallery', function () {
-			$response = array(
-				'message' => 'To jest odpowiedź z żądania AJAX!',
-			);
-			// Zwróć odpowiedź jako JSON
-			wp_send_json($response);
+		global $wpdb;
+
+		add_action( 'wp_ajax_load_furllery', function () use ( $wpdb ) {
+			$gallery_id = (int) strip_tags( $_POST['id'] ?? - 1 );
+			$table_name = $wpdb->prefix . FurlleryDB::TABLE_GALLERIES;
+
+			$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $table_name . ' WHERE id = %d', $gallery_id ), );
+
+			$is_active = '1' === ( $row->active ?? '0' );
+
+			if ( ! $is_active ) {
+				wp_send_json_error();
+				wp_die();
+			}
+
+			$gallery = [];
+			$media   = json_decode( $row->content ?? '[]', true ) ?? [];
+
+			foreach ( $media as $media_id ) {
+				$item = get_post( $media_id );
+				$meta = get_post_meta( $media_id );
+
+				$gallery[] = [
+					'id'        => $item->ID,
+					'url'       => wp_get_attachment_url( $media_id ),
+					'thumbnail' => wp_get_attachment_thumb_url( $media_id ),
+					'meta'      => [
+						'author' => $meta['furllery_author'] ?? '',
+						'note'   => $meta['furllery_note'] ?? '',
+					],
+				];
+			}
+
+			wp_send_json_success( [
+				'title'       => $row->title ?? '',
+				'description' => $row->description ?? '',
+				'gallery'     => $gallery,
+			] );
+			wp_die();
 		} );
 	}
 
