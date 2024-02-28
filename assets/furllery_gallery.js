@@ -9,6 +9,7 @@ class FurlleryGallery {
 
     this.$container = jQuery( el );
     this.$overlay = jQuery( 'body .df-furllery-body-overlay' );
+    this.$wrapper = jQuery( 'body .df-furllery-gallery-wrapper' );
   }
 
   addEvents() {
@@ -23,6 +24,7 @@ class FurlleryGallery {
       event.preventDefault();
 
       this.$overlay.addClass( 'active' );
+      this.$wrapper.addClass( 'active' );
       this.loadGallery();
     } )
   }
@@ -31,8 +33,9 @@ class FurlleryGallery {
 
   }
 
-  async closeGallery() {
+  closeGallery() {
     this.$overlay.removeClass( 'active' );
+    this.$wrapper.removeClass( 'active' );
   }
 
 }

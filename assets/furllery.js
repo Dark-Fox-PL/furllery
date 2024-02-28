@@ -8,6 +8,8 @@ class Furllery {
 
   setProperties() {
     this.$galleries = jQuery( 'body .df-furllery' );
+    this.$overlay = jQuery( 'body .df-furllery-body-overlay' );
+    this.$wrapper = jQuery( 'body .df-furllery-gallery-wrapper' );
   }
 
   addEvents() {

@@ -16,7 +16,19 @@ class Furllery {
 	}
 
 	public function add_overlay(): void {
-		echo '<div class="df-furllery-body-overlay"><div class="df-close-button"></div><div class="df-furllery-loader"></div></div>';
+		echo '
+		<div class="df-furllery-body-overlay">
+			<div class="df-furllery-gallery-wrapper">
+				<div class="df-furllery-header">
+					<div class="df-close-button"></div>
+				</div>
+				<div class="df-furllery-preview">
+					<div class="df-furllery-loader"></div>
+				</div>
+				<div class="df-furllery-aside"></div>
+				<div class="df-furllery-footer"></div>
+			</div>
+		</div>';
 	}
 
 	protected function initialize_plugin(): Furllery {
