@@ -1,7 +1,11 @@
 <?php
 
 final class FurlleryAdmin {
-	public function __construct( protected FurlleryDB $db = new FurlleryDB ) { }
+	protected FurlleryDB $db;
+
+	public function __construct() {
+		$this->db = new FurlleryDB;
+	}
 
 	public function initialize(): void {
 		$this->add_actions();

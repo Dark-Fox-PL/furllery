@@ -1,7 +1,7 @@
 <?php
 
 class FurlleryDB {
-	public const string TABLE_GALLERIES = 'df_furllery_galleries';
+	public const TABLE_GALLERIES = 'df_furllery_galleries';
 
 	public function maybe_update_gallery( int $edit_id ): void {
 		global $furllery_errors;

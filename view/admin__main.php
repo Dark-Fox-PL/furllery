@@ -9,10 +9,12 @@ class Furllery_Galleries_List_Table extends WP_List_Table {
 	}
 
 	function column_default( $item, $column_name ) {
-		return match ( $column_name ) {
-			'title' => sprintf( '<strong>%s</strong>', $item['title'] ),
-			default => $item[ $column_name ],
-		};
+    switch ( $column_name ) {
+        case 'title':
+          return sprintf( '<strong>%s</strong>', $item['title'] );
+        default:
+          return $item[ $column_name ];
+    }
 	}
 
 	function column_images( $item ): string {
