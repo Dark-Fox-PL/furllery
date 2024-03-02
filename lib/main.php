@@ -24,12 +24,18 @@ class Furllery {
 			<div class="df-furllery-gallery-wrapper">
 				<div class="df-furllery-header">
 					<div class="df-close-button"></div>
+					<div class="df-furllery-header-content"></div>
+					<div class="df-toggle-panel-button"></div>
 				</div>
 				<div class="df-furllery-preview">
 					<div class="df-furllery-loader"></div>
+					<div class="df-furllery-image"></div>
 				</div>
 				<div class="df-furllery-aside"></div>
-				<div class="df-furllery-footer"></div>
+				<div class="df-furllery-footer">
+					<div class="df-furllery-meta-author"></div>
+					<div class="df-furllery-meta-note"></div>
+				</div>
 			</div>
 		</div>';
 	}
