@@ -30,6 +30,8 @@ class Furllery {
 				<div class="df-furllery-preview">
 					<div class="df-furllery-loader"></div>
 					<div class="df-furllery-image"></div>
+					<div class="df-furllery-navigate df-furllery-navigate-left"><div class="df-furllery-arrow-left"></div></div>
+					<div class="df-furllery-navigate df-furllery-navigate-right"><div class="df-furllery-arrow-right"></div></div>
 				</div>
 				<div class="df-furllery-aside"></div>
 				<div class="df-furllery-footer">

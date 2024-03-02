@@ -7,6 +7,7 @@ class FurlleryGallery {
   setProperties(id, el) {
     this.id = id;
     this.current = -1;
+    this.lastImage = -1;
     this.gallery = {};
 
     this.$container = jQuery( el );
@@ -28,10 +29,18 @@ class FurlleryGallery {
       if ('Escape' === event.key) {
        this.closeGallery();
       }
+
+      if (event.keyCode === 37) {
+        this.navigate();
+      } else if (event.keyCode === 39) {
+        this.navigate(false);
+      }
     } );
 
     this.$overlay.on( 'click', '.df-close-button', () => this.closeGallery() );
     this.$overlay.on( 'click', '.df-toggle-panel-button', () => this.togglePanel() );
+    this.$overlay.on( 'click', '.df-furllery-navigate-left', () => this.navigate() );
+    this.$overlay.on( 'click', '.df-furllery-navigate-right', () => this.navigate(false) );
 
     this.$container.on( 'click', event => {
       event.preventDefault();
@@ -47,6 +56,18 @@ class FurlleryGallery {
       event.preventDefault();
       this.displayImage( jQuery( event.currentTarget ).data('image') );
     } );
+  }
+
+  navigate(isLeft = true) {
+    const check = isLeft ? this.current - 1 : this.current + 1;
+
+    if ((isLeft && check < 0) || (!isLeft && check > this.lastImage)) {
+      this.current = isLeft ? this.lastImage : 0;
+    } else {
+      this.current = check;
+    }
+
+    this.displayImage(this.current);
   }
 
   loadGallery() {
@@ -87,6 +108,8 @@ class FurlleryGallery {
       return this.closeGallery();
     }
 
+    this.$wrapper.toggleClass( 'no-navigation', 1 >= Object.keys( this.gallery ).length )
+
     let index = 0;
     const $thumbnail = jQuery('<div class="df-furllery-panel-thumbnail" data-image=""><img src="" alt=""></div>');
 
@@ -94,6 +117,8 @@ class FurlleryGallery {
 
     for ( let image of this.gallery ) {
       const $newThumbnail = $thumbnail.clone();
+
+      this.lastImage = index;
 
       $newThumbnail.attr( 'data-image', index );
       $newThumbnail.find( 'img' ).attr( 'src', image?.thumbnail ).attr( 'alt', image?.meta?.note ?? '' );
@@ -107,6 +132,8 @@ class FurlleryGallery {
   }
 
   displayImage(id) {
+    this.current = id;
+
     this.$wrapper.addClass( 'no-loader' );
     this.$image.html( '' );
     this.$author.text( '' );
@@ -125,6 +152,8 @@ class FurlleryGallery {
     if ( Array.isArray( image?.meta?.note ) && 0 < image?.meta?.note.length ) {
       this.$note.text( image?.meta?.note[0] );
     }
+
+    this.setActiveThumbnail();
   }
 
   cleanGallery() {
@@ -133,6 +162,11 @@ class FurlleryGallery {
     this.$author.text( '' );
     this.$note.text( '' );
     this.$image.html( '' );
+  }
+
+  setActiveThumbnail() {
+    this.$panel.find( '.df-furllery-panel-thumbnail' ).removeClass( 'active' );
+    this.$panel.find( `.df-furllery-panel-thumbnail[data-image=${this.current}]` ).addClass( 'active' )
   }
 
 }

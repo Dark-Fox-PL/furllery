@@ -37,6 +37,9 @@
     height: 100%;
   }
 
+  .df-furllery-arrow-left,
+  .df-furllery-arrow-right,
+  .df-toggle-panel-button,
   .df-close-button {
     color: #fff;
     font-size: 50px;
@@ -52,6 +55,12 @@
       line-height: 40px;
       text-align: center;
       transition: all .2s;
+
+      text-shadow:
+        1px 1px 10px rgba(0, 0, 0, .4),
+        -1px 1px 10px rgba(0, 0, 0, .4),
+        -1px -1px 10px rgba(0, 0, 0, .4),
+        1px -1px 10px rgba(0, 0, 0, .4);
     }
 
     &:hover:after {
@@ -86,6 +95,14 @@
     }
   }
 
+  &.no-navigation {
+    .df-furllery-preview {
+      .df-furllery-navigate {
+        display: none;
+      }
+    }
+  }
+
   .df-furllery-header {
     width: calc(100% - 200px);
     height: 50px;
@@ -112,26 +129,8 @@
         1px -1px 0 #000;
     }
 
-    .df-toggle-panel-button {
-      color: #fff;
-      font-size: 50px;
-      cursor: pointer;
-
-      display: flex;
-      margin-left: 10px;
-
-      &:after {
-        content: "\2630";
-        font-size: 50px;
-        color: #fff;
-        line-height: 40px;
-        text-align: center;
-        transition: all .2s;
-      }
-
-      &:hover:after {
-        color: darkorange;
-      }
+    .df-toggle-panel-button:after {
+      content: "\2630";
     }
   }
 
@@ -149,6 +148,63 @@
 
     .df-furllery-image {
       padding: 10px;
+    }
+
+    .df-furllery-navigate {
+      position: absolute;
+      width: 150px;
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition: all .2s;
+
+      &.df-furllery-navigate-left {
+        left: 0;
+        justify-content: flex-start;
+        padding-left: 20px;
+
+        &:hover {
+          background: radial-gradient(circle at left, rgba(206, 206, 206, 0.45) 0%, transparent 30%);
+        }
+      }
+
+      &.df-furllery-navigate-right {
+        right: 0;
+        justify-content: flex-end;
+        padding-right: 20px;
+
+        &:hover {
+          background: radial-gradient(circle at right, rgba(206, 206, 206, 0.45) 0%, transparent 30%);
+        }
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        .df-furllery-arrow-left:after {
+          opacity: 1;
+          color: darkorange;
+        }
+
+        .df-furllery-arrow-right:after {
+          opacity: 1;
+          color: darkorange;
+        }
+      }
+
+      .df-furllery-arrow-left:after {
+        content: '\2a1e';
+        opacity: 0;
+      }
+
+      .df-furllery-arrow-right:after {
+        content: '\2a1e';
+        rotate: 180deg;
+        opacity: 0;
+      }
     }
   }
 
@@ -179,6 +235,7 @@
       align-items: center;
       justify-content: center;
 
+      border-radius: 2px;
       background-color: #f3f4f5;
       transition: all .2s;
 
@@ -186,6 +243,7 @@
         margin-right: 10px;
       }
 
+      &.active,
       &:hover {
         background-color: orangered;
         cursor: pointer;
