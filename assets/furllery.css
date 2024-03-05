@@ -9,8 +9,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(185, 80, 5, 0.45);
+    background-color: rgba(185, 80, 5, 0);
     transition: all .25s;
+    opacity: 0;
 
     display: flex;
     align-items: flex-end;
@@ -28,6 +29,7 @@
   }
 
   &:hover .df-furllery-overlay {
+    background-color: rgba(185, 80, 5, 0.45);
     opacity: 1;
     z-index: 1;
   }
