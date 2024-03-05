@@ -6,7 +6,7 @@ class Furllery {
 	}
 
 	public function add_furllery_assets(): void {
-		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ) );
+		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ), [], '1.0.1' );
 
 		wp_enqueue_script( 'lodash', '...' );
 		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
