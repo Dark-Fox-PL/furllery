@@ -152,7 +152,7 @@ class FurlleryGallery {
     }
 
     if ( Array.isArray( image?.meta?.note ) && 0 < image?.meta?.note.length ) {
-      this.$note.text( image?.meta?.note[0] );
+      this.$note.html( image?.meta?.note[0] );
     }
 
     this.setActiveThumbnail();

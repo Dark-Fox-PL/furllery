@@ -72,7 +72,7 @@ class Furllery {
 			],
 			'furllery_note'   => [
 				'label' => __( 'Notatka', 'df_furllery' ),
-				'input' => 'text',
+				'input' => 'textarea',
 				'value' => get_post_meta( $post->ID, 'furllery_note', true ),
 			],
 		];
@@ -85,7 +85,7 @@ class Furllery {
 			}
 
 			if ( isset( $attachment['furllery_note'] ) ) {
-				update_post_meta( $post['ID'], 'furllery_note', sanitize_text_field( $attachment['furllery_note'] ) );
+				update_post_meta( $post['ID'], 'furllery_note', wp_kses_post( $attachment['furllery_note'] ) );
 			} else {
 				delete_post_meta( $post['ID'], 'furllery_note' );
 			}
