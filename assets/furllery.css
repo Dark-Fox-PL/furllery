@@ -9,13 +9,27 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #0c0c0c;
-    opacity: 0;
+    background-color: rgba(185, 80, 5, 0.45);
+    opacity: 1;
     transition: all .25s;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    .df-furllery-title {
+      padding-bottom: 2px;
+      color: white;
+      text-shadow:
+        1px 1px 0 #000,
+        -1px 1px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000;
+    }
   }
 
   &:hover .df-furllery-overlay {
-    opacity: .3;
+    opacity: 1;
   }
 }
 

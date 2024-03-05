@@ -128,6 +128,7 @@ class Furllery {
 			}
 
 			$image = '';
+			$title = $gallery['title'] ?? '';
 
 			if ( 0 <= $gallery['thumbnail'] ) {
 				$image = wp_get_attachment_image( $gallery['thumbnail'], [ 200, 200 ] );
@@ -139,7 +140,7 @@ class Furllery {
 				}
 			}
 
-			return sprintf( '<div class="df-furllery" data-gallery="%d"><div class="df-furllery-overlay"></div>%s</div>', $id, $image );
+			return sprintf( '<div class="df-furllery" data-gallery="%d"><div class="df-furllery-overlay"><div class="df-furllery-title">%s</div></div>%s</div>', $id, $title, $image );
 		} );
 	}
 
