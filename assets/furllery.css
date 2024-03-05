@@ -29,6 +29,7 @@
 
   &:hover .df-furllery-overlay {
     opacity: 1;
+    z-index: 1;
   }
 }
 
