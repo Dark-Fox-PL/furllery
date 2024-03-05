@@ -16,6 +16,7 @@ class FurlleryGallery {
 
     this.$header = this.$wrapper.find( '.df-furllery-header' );
     this.$headerContent = this.$header.find( '.df-furllery-header-content' );
+    this.$headerDescription = this.$header.find( '.df-furllery-header-description' );
     this.$preview = this.$wrapper.find( '.df-furllery-preview' );
     this.$image = this.$preview.find( '.df-furllery-image' );
     this.$panel = this.$wrapper.find( '.df-furllery-aside' );
@@ -114,6 +115,7 @@ class FurlleryGallery {
     const $thumbnail = jQuery('<div class="df-furllery-panel-thumbnail" data-image=""><img src="" alt=""></div>');
 
     this.$headerContent.text( response?.data?.title ?? '' );
+    this.$headerDescription.text( response?.data?.description ?? '' );
 
     for ( let image of this.gallery ) {
       const $newThumbnail = $thumbnail.clone();
@@ -158,6 +160,7 @@ class FurlleryGallery {
 
   cleanGallery() {
     this.$headerContent.text( '' );
+    this.$headerDescription.text( '' );
     this.$panel.html( '' );
     this.$author.text( '' );
     this.$note.text( '' );

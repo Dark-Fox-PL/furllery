@@ -105,13 +105,14 @@
 
   .df-furllery-header {
     width: calc(100% - 200px);
-    height: 50px;
+    height: 100px;
     position: absolute;
     top: 0;
 
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    flex-wrap: wrap;
 
     transition: all .2s;
 
@@ -132,11 +133,25 @@
     .df-toggle-panel-button:after {
       content: "\2630";
     }
+
+    .df-furllery-header-description {
+      flex-basis: 100%;
+      color: #fff;
+      text-align: center;
+      letter-spacing: 1px;
+      padding: 2px;
+
+      text-shadow:
+        1px 1px 0 #000,
+        -1px 1px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000;
+    }
   }
 
   .df-furllery-preview {
     width: calc(100% - 200px);
-    height: calc(100% - 150px);
+    height: calc(100% - 200px);
     position: absolute;
     bottom: 100px;
 
@@ -148,6 +163,14 @@
 
     .df-furllery-image {
       padding: 10px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+
+      img {
+        object-fit: scale-down;
+      }
     }
 
     .df-furllery-navigate {

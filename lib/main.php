@@ -26,6 +26,8 @@ class Furllery {
 					<div class="df-close-button"></div>
 					<div class="df-furllery-header-content"></div>
 					<div class="df-toggle-panel-button"></div>
+					
+					<div class="df-furllery-header-description"></div>
 				</div>
 				<div class="df-furllery-preview">
 					<div class="df-furllery-loader"></div>
