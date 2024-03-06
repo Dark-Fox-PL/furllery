@@ -153,7 +153,7 @@ class Furllery {
 	protected function ajax__load_gallery() {
 		global $wpdb;
 
-		add_action( 'wp_ajax_load_furllery', function () use ( $wpdb ) {
+		$load_gallery = function () use ( $wpdb ) {
 			$gallery_id = (int) strip_tags( $_POST['id'] ?? - 1 );
 			$table_name = $wpdb->prefix . FurlleryDB::TABLE_GALLERIES;
 
@@ -195,7 +195,10 @@ class Furllery {
 				'gallery'     => $gallery,
 			] );
 			wp_die();
-		} );
+		};
+
+		add_action( 'wp_ajax_load_furllery', $load_gallery );
+		add_action( 'wp_ajax_nopriv_load_furllery', $load_gallery );
 	}
 
 }
