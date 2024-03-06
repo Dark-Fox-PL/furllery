@@ -1,16 +1,21 @@
 class FurlleryGallery {
-  constructor(id, el) {
-    this.setProperties(id, el);
+  constructor(el) {
+    this.setProperties(el);
     this.addEvents();
+
+    this.$overlay.addClass( 'active' );
+    this.$wrapper.addClass( 'active' );
+
+    this.cleanGallery();
+    this.loadGallery();
   }
 
-  setProperties(id, el) {
-    this.id = id;
+  setProperties(el) {
+    this.id = el.dataset.gallery || -1;
     this.current = -1;
     this.lastImage = -1;
     this.gallery = {};
 
-    this.$container = jQuery( el );
     this.$overlay = jQuery( 'body .df-furllery-body-overlay' );
     this.$wrapper = jQuery( 'body .df-furllery-gallery-wrapper' );
 
@@ -43,15 +48,7 @@ class FurlleryGallery {
     this.$overlay.on( 'click', '.df-furllery-navigate-left', () => this.navigate() );
     this.$overlay.on( 'click', '.df-furllery-navigate-right', () => this.navigate(false) );
 
-    this.$container.on( 'click', event => {
-      event.preventDefault();
 
-      this.$overlay.addClass( 'active' );
-      this.$wrapper.addClass( 'active' );
-
-      this.cleanGallery();
-      this.loadGallery();
-    } )
 
     this.$panel.on( 'click', '.df-furllery-panel-thumbnail', event => {
       event.preventDefault();
