@@ -1,3 +1,5 @@
+"use strict";
+
 class FurlleryGallery {
   constructor(el) {
     this.setProperties(el);
@@ -48,9 +50,7 @@ class FurlleryGallery {
     this.$overlay.on( 'click', '.df-furllery-navigate-left', () => this.navigate() );
     this.$overlay.on( 'click', '.df-furllery-navigate-right', () => this.navigate(false) );
 
-
-
-    this.$panel.on( 'click', '.df-furllery-panel-thumbnail', event => {
+    this.$panel.off('click').on( 'click', '.df-furllery-panel-thumbnail', event => {
       event.preventDefault();
       this.displayImage( jQuery( event.currentTarget ).data('image') );
     } );
@@ -89,6 +89,7 @@ class FurlleryGallery {
     this.$wrapper.removeClass( 'active' );
 
     this.cleanGallery();
+    delete(this);
   }
 
   togglePanel() {
@@ -133,7 +134,6 @@ class FurlleryGallery {
   displayImage(id) {
     this.current = id;
 
-    this.$wrapper.addClass( 'no-loader' );
     this.$image.html( '' );
     this.$author.text( '' );
     this.$note.text( '' );

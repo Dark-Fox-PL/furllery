@@ -1,3 +1,5 @@
+"use strict";
+
 class FurlleryAdmin {
   constructor() {
     this.setProperties();
@@ -126,6 +128,7 @@ class FurlleryAdmin {
         gallery.push(image.id);
       } else {
         imageId = image.id;
+        $wrapper.html('');
       }
 
       const $holder = this.$singleImageTpl.clone();

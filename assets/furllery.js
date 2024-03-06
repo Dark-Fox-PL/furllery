@@ -1,3 +1,5 @@
+"use strict";
+
 class Furllery {
   constructor() {
     this.setProperties();
