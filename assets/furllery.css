@@ -1,44 +1,61 @@
+.df-furllery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.df-furllery.df-furllery-centered {
+  justify-content: center;
+}
+.df-furllery.df-furllery-left {
+  justify-content: start;
+}
+.df-furllery.df-furllery-right {
+  justify-content: end;
+}
+
+.df-furllery-grid .df-furllery {
+  margin: 5px;
+}
+
 .df-furllery {
   display: inline-block;
   position: relative;
   cursor: pointer;
+}
 
-  .df-furllery-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(185, 80, 5, 0);
-    transition: all .25s;
-    opacity: 0;
+.df-furllery .df-furllery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(185, 80, 5, 0);
+  transition: all .25s;
+  opacity: 0;
 
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-
-    .df-furllery-title {
-      padding-bottom: 2px;
-      color: white;
-      text-shadow:
-        1px 1px 0 #000,
-        -1px 1px 0 #000,
-        -1px -1px 0 #000,
-        1px -1px 0 #000;
-    }
-  }
-
-  &:hover .df-furllery-overlay {
-    background-color: rgba(185, 80, 5, 0.45);
-    opacity: 1;
-    z-index: 1;
-  }
-
-  img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-  }
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.df-furllery:hover .df-furllery-overlay {
+  background-color: rgba(185, 80, 5, 0.45);
+  opacity: 1;
+  z-index: 1;
+}
+.df-furllery .df-furllery-overlay img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+.df-furllery .df-furllery-overlay .df-furllery-title {
+  padding-bottom: 2px;
+  color: white;
+  text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
 }
 
 .df-furllery-body-overlay {
@@ -52,43 +69,45 @@
 
   align-items: center;
   justify-content: center;
+}
+.df-furllery-body-overlay.active {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.df-furllery-body-overlay .df-furllery-arrow-left,
+.df-furllery-body-overlay .df-furllery-arrow-right,
+.df-furllery-body-overlay .df-toggle-panel-button,
+.df-furllery-body-overlay .df-close-button {
+  color: #fff;
+  font-size: 50px;
+  cursor: pointer;
 
-  &.active {
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
+  display: flex;
+  margin-left: 10px;
+}
+.df-furllery-body-overlay .df-furllery-arrow-left:after,
+.df-furllery-body-overlay .df-furllery-arrow-right:after,
+.df-furllery-body-overlay .df-toggle-panel-button:after,
+.df-furllery-body-overlay .df-close-button:after {
+  content: "\d7";
+  font-size: 50px;
+  color: #fff;
+  line-height: 40px;
+  text-align: center;
+  transition: all .2s;
 
-  .df-furllery-arrow-left,
-  .df-furllery-arrow-right,
-  .df-toggle-panel-button,
-  .df-close-button {
-    color: #fff;
-    font-size: 50px;
-    cursor: pointer;
-
-    display: flex;
-    margin-left: 10px;
-
-    &:after {
-      content: "\d7";
-      font-size: 50px;
-      color: #fff;
-      line-height: 40px;
-      text-align: center;
-      transition: all .2s;
-
-      text-shadow:
-        1px 1px 10px rgba(0, 0, 0, .4),
-        -1px 1px 10px rgba(0, 0, 0, .4),
-        -1px -1px 10px rgba(0, 0, 0, .4),
-        1px -1px 10px rgba(0, 0, 0, .4);
-    }
-
-    &:hover:after {
-      color: darkorange;
-    }
-  }
+  text-shadow:
+    1px 1px 10px rgba(0, 0, 0, .4),
+    -1px 1px 10px rgba(0, 0, 0, .4),
+    -1px -1px 10px rgba(0, 0, 0, .4),
+    1px -1px 10px rgba(0, 0, 0, .4);
+}
+.df-furllery-body-overlay:hover .df-furllery-arrow-left:after,
+.df-furllery-body-overlay:hover .df-furllery-arrow-right:after,
+.df-furllery-body-overlay:hover .df-toggle-panel-button:after,
+.df-furllery-body-overlay:hover .df-close-button:after {
+  color: darkorange;
 }
 
 .df-furllery-gallery-wrapper {
@@ -96,260 +115,223 @@
   height: 100%;
   position: absolute;
   bottom: 0;
+}
 
-  &.no-panel {
-    .df-furllery-footer,
-    .df-furllery-preview,
-    .df-furllery-header {
-      width: 100%;
-    }
+.df-furllery-gallery-wrapper.no-panel .df-furllery-footer,
+.df-furllery-gallery-wrapper.no-panel .df-furllery-preview,
+.df-furllery-gallery-wrapper.no-panel .df-furllery-header {
+  width: 100%;
+}
+.df-furllery-gallery-wrapper.no-panel .df-furllery-aside {
+  width: 0;
+  padding: 0;
+}
+.df-furllery-gallery-wrapper.no-loader .df-furllery-loader {
+  opacity: 0;
+  display: none;
+}
+.df-furllery-gallery-wrapper.no-navigation .df-furllery-preview .df-furllery-navigate {
+  display: none;
+}
+.df-furllery-gallery-wrapper .df-furllery-header {
+  width: calc(100% - 200px);
+  height: 100px;
+  position: absolute;
+  top: 0;
 
-    .df-furllery-aside {
-      width: 0;
-      padding: 0;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-header .df-furllery-header-content {
+  flex-grow: 1;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 1px;
+
+  text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
+}
+.df-furllery-gallery-wrapper .df-furllery-header .df-toggle-panel-button:after {
+  content: "\2630";
+}
+.df-furllery-gallery-wrapper .df-furllery-header .df-furllery-header-description {
+  flex-basis: 100%;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 1px;
+  padding: 2px;
+
+  text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
+}
+
+.df-furllery-gallery-wrapper .df-furllery-preview {
+  width: calc(100% - 200px);
+  height: calc(100% - 200px);
+  position: absolute;
+  bottom: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-image {
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-image img {
+  object-fit: scale-down;
+}
+
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate.df-furllery-navigate-left {
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate.df-furllery-navigate-right {
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate:hover {
+  cursor: pointer;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate:hover .df-furllery-arrow-left:after,
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate:hover .df-furllery-arrow-right:after {
+  opacity: 1;
+  color: darkorange;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate .df-furllery-arrow-left:after,
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate .df-furllery-arrow-right:after {
+  content: '\2a1e';
+  font-size: 1.5rem;
+  opacity: .5;
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate .df-furllery-arrow-right:after {
+  rotate: 180deg;
+}
+
+.df-furllery-gallery-wrapper .df-furllery-aside {
+  background-color: rgba(12, 12, 12, 0.52);
+
+  width: 200px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: space-between;
+
+  overflow: auto;
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-aside .df-furllery-panel-thumbnail {
+  width: 85px;
+  height: 70px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 2px;
+  background-color: #f3f4f5;
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-aside .df-furllery-panel-thumbnail:nth-child(odd) {
+  margin-right: 10px;
+}
+.df-furllery-gallery-wrapper .df-furllery-aside .df-furllery-panel-thumbnail:active,
+.df-furllery-gallery-wrapper .df-furllery-aside .df-furllery-panel-thumbnail:hover {
+  background-color: orangered;
+  cursor: pointer;
+}
+.df-furllery-gallery-wrapper .df-furllery-aside .df-furllery-panel-thumbnail img {
+  display: block;
+  width: 75px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.df-furllery-gallery-wrapper .df-furllery-footer {
+  width: calc(100% - 200px);
+  height: 100px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all .2s;
+}
+.df-furllery-gallery-wrapper .df-furllery-footer .df-furllery-meta-author,
+.df-furllery-gallery-wrapper .df-furllery-footer .df-furllery-meta-note {
+  color: #fff;
+  text-align: center;
+  letter-spacing: 1px;
+
+  text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
+}
+.df-furllery-gallery-wrapper .df-furllery-footer .df-furllery-meta-author {
+  font-size: 16px;
+}
+.df-furllery-gallery-wrapper .df-furllery-footer .df-furllery-meta-note {
+  font-size: 14px;
+  font-style: italic;
+}
+
+@media only screen and (max-width: 782px) {
+  .df-furllery-gallery-wrapper .df-furllery-footer,
+  .df-furllery-gallery-wrapper .df-furllery-preview,
+  .df-furllery-gallery-wrapper .df-furllery-header {
+    width: calc(100% - 110px);
   }
 
-  &.no-loader {
-    .df-furllery-loader {
-      opacity: 0;
-      display: none;
-    }
-  }
-
-  &.no-navigation {
-    .df-furllery-preview {
-      .df-furllery-navigate {
-        display: none;
-      }
-    }
-  }
-
-  .df-furllery-header {
-    width: calc(100% - 200px);
-    height: 100px;
-    position: absolute;
-    top: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-
-    transition: all .2s;
-
-    .df-furllery-header-content {
-      flex-grow: 1;
-      color: #fff;
-      text-align: center;
-      font-size: 20px;
-      letter-spacing: 1px;
-
-      text-shadow:
-        1px 1px 0 #000,
-        -1px 1px 0 #000,
-        -1px -1px 0 #000,
-        1px -1px 0 #000;
-    }
-
-    .df-toggle-panel-button:after {
-      content: "\2630";
-    }
-
-    .df-furllery-header-description {
-      flex-basis: 100%;
-      color: #fff;
-      text-align: center;
-      letter-spacing: 1px;
-      padding: 2px;
-
-      text-shadow:
-        1px 1px 0 #000,
-        -1px 1px 0 #000,
-        -1px -1px 0 #000,
-        1px -1px 0 #000;
-    }
-  }
-
-  .df-furllery-preview {
-    width: calc(100% - 200px);
-    height: calc(100% - 200px);
-    position: absolute;
-    bottom: 100px;
-
-    display: flex;
-    align-items: center;
+  .df-furllery-gallery-wrapper .df-furllery-aside {
+    width: 110px;
+    padding: 5px;
     justify-content: center;
-
-    transition: all .2s;
-
-    .df-furllery-image {
-      padding: 10px;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      z-index: 1;
-
-      img {
-        object-fit: scale-down;
-      }
-    }
-
-    .df-furllery-navigate {
-      position: absolute;
-      width: 150px;
-      height: 100%;
-      z-index: 2;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      transition: all .2s;
-
-      &.df-furllery-navigate-left {
-        left: 0;
-        justify-content: flex-start;
-        padding-left: 20px;
-      }
-
-      &.df-furllery-navigate-right {
-        right: 0;
-        justify-content: flex-end;
-        padding-right: 20px;
-      }
-
-      &:hover {
-        cursor: pointer;
-
-        .df-furllery-arrow-left:after {
-          opacity: 1;
-          color: darkorange;
-        }
-
-        .df-furllery-arrow-right:after {
-          opacity: 1;
-          color: darkorange;
-        }
-      }
-
-      .df-furllery-arrow-left:after {
-        content: '\2a1e';
-        font-size: 1.5rem;
-        opacity: .5;
-        transition: all .2s;
-      }
-
-      .df-furllery-arrow-right:after {
-        content: '\2a1e';
-        font-size: 1.5rem;
-        rotate: 180deg;
-        opacity: .5;
-        transition: all .2s;
-      }
-    }
   }
 
-  .df-furllery-aside {
-    background-color: rgba(12, 12, 12, 0.52);
-
-    width: 200px;
-    height: 100%;
-    position: absolute;
-    right: 0;
-
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    align-content: flex-start;
-    justify-content: space-between;
-
-    overflow: auto;
-    transition: all .2s;
-
-    .df-furllery-panel-thumbnail {
-      width: 85px;
-      height: 70px;
-      margin-bottom: 10px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 2px;
-      background-color: #f3f4f5;
-      transition: all .2s;
-
-      &:nth-child(odd) {
-        margin-right: 10px;
-      }
-
-      &.active,
-      &:hover {
-        background-color: orangered;
-        cursor: pointer;
-      }
-
-      img {
-        display: block;
-        width: 75px;
-        height: 60px;
-        object-fit: cover;
-      }
-    }
-  }
-
-  .df-furllery-footer {
-    width: calc(100% - 200px);
-    height: 100px;
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    transition: all .2s;
-
-    .df-furllery-meta-author,
-    .df-furllery-meta-note {
-      color: #fff;
-      text-align: center;
-      letter-spacing: 1px;
-
-      text-shadow:
-        1px 1px 0 #000,
-        -1px 1px 0 #000,
-        -1px -1px 0 #000,
-        1px -1px 0 #000;
-    }
-
-    .df-furllery-meta-author {
-      font-size: 16px;
-    }
-
-    .df-furllery-meta-note {
-      font-size: 14px;
-      font-style: italic;
-    }
-  }
-
-  @media only screen and (max-width: 782px) {
-    .df-furllery-footer,
-    .df-furllery-preview,
-    .df-furllery-header {
-      width: calc(100% - 110px);
-    }
-
-    .df-furllery-aside {
-      width: 110px;
-      padding: 5px;
-      justify-content: center;
-
-      .df-furllery-panel-thumbnail:nth-child(odd) {
-        margin-right: 0;
-      }
-    }
+  .df-furllery-gallery-wrapper .df-furllery-aside .df-furllery-panel-thumbnail:nth-child(odd) {
+    margin-right: 0;
   }
 }
 

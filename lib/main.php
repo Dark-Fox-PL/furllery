@@ -6,13 +6,13 @@ class Furllery {
 	}
 
 	public function add_furllery_assets(): void {
-		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ), [], '1.0.7' );
+		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ), [], '1.0.8' );
 
 		wp_enqueue_script( 'lodash', '...' );
 		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
 
-		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.7', true );
-		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.7', true );
+		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.8', true );
+		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.8', true );
 
 		// Dodaj przekazanie zmiennej ajaxurl dla furllery_gallery.js
 		wp_localize_script( 'furllery-script-gallery', 'wp_core', [ 'ajaxurl' => admin_url( 'admin-ajax.php' ) ] );
@@ -108,6 +108,7 @@ class Furllery {
 
 	protected function create_shortcodes(): Furllery {
 		$this->create_gallery_shortcode();
+		$this->create_gallery_grid_shortcode();
 
 		return $this;
 	}
@@ -141,6 +142,77 @@ class Furllery {
 			}
 
 			return sprintf( '<div class="df-furllery" data-gallery="%d"><div class="df-furllery-overlay"><div class="df-furllery-title">%s</div></div>%s</div>', $id, $title, $image );
+		} );
+	}
+
+	protected function create_gallery_grid_shortcode(): void {
+		global $wpdb;
+
+		add_shortcode( 'df_furllery_grid', function ( $attr ) use ( $wpdb ): string {
+			$default = [ 'ids' => '', 'align' => 'center' ];
+			$attr    = shortcode_atts( $default, $attr );
+			$ids     = explode( ',', $attr['ids'] );
+
+			if ( 0 === count( $ids ) ) {
+				return '';
+			}
+
+			$wrapper  = '<div class="df-furllery-grid %s">%s</div>';
+			$elements = [];
+			$table    = $wpdb->prefix . FurlleryDB::TABLE_GALLERIES;
+
+			foreach ( $ids as $id ) {
+				$id = (int) esc_attr( $id );
+
+				if ( 0 >= $id ) {
+					continue;
+				}
+
+				$gallery = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE id = %d", $id ), ARRAY_A );
+
+				if ( ! $gallery ) {
+					continue;
+				}
+
+				$image = '';
+				$title = $gallery['title'] ?? '';
+
+				if ( 0 <= $gallery['thumbnail'] ) {
+					$image = wp_get_attachment_image( $gallery['thumbnail'], [ 200, 200 ] );
+				} else {
+					$images = json_decode( $gallery['content'] ?? '[]', true );
+
+					if ( is_array( $images ) && 0 < count( $images ) ) {
+						$image = wp_get_attachment_image( $images[0], [ 200, 200 ] );
+					}
+				}
+
+				$elements[] = sprintf( '<div class="df-furllery" data-gallery="%d"><div class="df-furllery-overlay"><div class="df-furllery-title">%s</div></div>%s</div>', $id, $title, $image );
+			}
+
+			if ( 0 === count( $elements ) ) {
+				return '';
+			}
+
+			$alignment = esc_attr( $attr['align'] );
+			$classes   = '';
+
+			switch ($alignment) {
+				case 'center':
+					$classes = 'df-furllery-centered';
+					break;
+				case 'left':
+					$classes = 'df-furllery-left';
+					break;
+				case 'right':
+					$classes = 'df-furllery-right';
+					break;
+			}
+
+			return vsprintf( $wrapper, [
+				$classes,
+				join( '', $elements ),
+			] );
 		} );
 	}
 

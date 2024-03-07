@@ -134,6 +134,7 @@ class FurlleryGallery {
   displayImage(id) {
     this.current = id;
 
+    this.$wrapper.addClass( 'no-loader' );
     this.$image.html( '' );
     this.$author.text( '' );
     this.$note.text( '' );
