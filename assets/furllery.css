@@ -198,6 +198,7 @@
 }
 .df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-image img {
   object-fit: scale-down;
+  filter: brightness(1) contrast(1);
 }
 
 .df-furllery-gallery-wrapper .df-furllery-preview .df-furllery-navigate {
