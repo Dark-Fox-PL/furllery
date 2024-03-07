@@ -134,7 +134,7 @@
   display: none;
 }
 .df-furllery-gallery-wrapper .df-furllery-header {
-  width: calc(100% - 210px);
+  width: calc(100% - 220px);
   height: 100px;
   position: absolute;
   top: 0;
@@ -177,7 +177,7 @@
 }
 
 .df-furllery-gallery-wrapper .df-furllery-preview {
-  width: calc(100% - 210px);
+  width: calc(100% - 220px);
   height: calc(100% - 200px);
   position: absolute;
   bottom: 100px;
@@ -245,7 +245,7 @@
 .df-furllery-gallery-wrapper .df-furllery-aside {
   background-color: rgba(12, 12, 12, 0.52);
 
-  width: 210px;
+  width: 220px;
   height: 100%;
   position: absolute;
   right: 0;
@@ -294,7 +294,7 @@
 }
 
 .df-furllery-gallery-wrapper .df-furllery-footer {
-  width: calc(100% - 210px);
+  width: calc(100% - 220px);
   height: 100px;
   position: absolute;
   bottom: 0;
