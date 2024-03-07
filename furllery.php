@@ -8,7 +8,7 @@ Plugin Name: Furllery
 Plugin URI: https://darkfox.pl
 Description: A WordPress gallery plugin with a bit of fur on it!
 Author: Reyn with 🧡 and 🍄
-Version: 1.5.2
+Version: 1.5.3
 Author URI: https://darkfox.pl
 */
 
