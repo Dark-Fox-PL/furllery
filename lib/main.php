@@ -6,13 +6,13 @@ class Furllery {
 	}
 
 	public function add_furllery_assets(): void {
-		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ), [], '1.0.10' );
+		wp_enqueue_style( 'furllery-style', plugins_url( 'assets/furllery.css', dirname( __FILE__ ) ), [], '1.0.11' );
 
 		wp_enqueue_script( 'lodash', '...' );
 		wp_add_inline_script( 'lodash', 'window.lodash = _.noConflict();', 'after' );
 
-		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.10', true );
-		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.10', true );
+		wp_enqueue_script( 'furllery-script', plugins_url( 'assets/furllery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.11', true );
+		wp_enqueue_script( 'furllery-script-gallery', plugins_url( 'assets/furllery_gallery.js', dirname( __FILE__ ) ), [ 'jquery' ], '1.0.11', true );
 
 		// Dodaj przekazanie zmiennej ajaxurl dla furllery_gallery.js
 		wp_localize_script( 'furllery-script-gallery', 'wp_core', [ 'ajaxurl' => admin_url( 'admin-ajax.php' ) ] );
